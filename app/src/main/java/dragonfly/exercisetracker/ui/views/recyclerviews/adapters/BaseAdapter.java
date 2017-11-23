@@ -11,7 +11,6 @@ import java.util.LinkedHashSet;
 public abstract class BaseAdapter extends RecyclerView.Adapter {
     private static final int BASE_VH_TYPE = -1;
     private final Handler MAIN_HANDLER = new Handler(Looper.getMainLooper());
-    private boolean dataObserverRegistered = false;
     private LinkedHashMap<Object, Integer> newSelectedKeys = new LinkedHashMap<Object, Integer>();
     private LinkedHashMap<Object, Integer> newUnselectedKeys = new LinkedHashMap<Object, Integer>();
     private LinkedHashMap<Object, Object> items = new LinkedHashMap<Object, Object>();
@@ -24,60 +23,10 @@ public abstract class BaseAdapter extends RecyclerView.Adapter {
     protected RecyclerView boundRecyclerView;
     public boolean nullSelectionAllowed = false;
     public boolean multiSelectionAllowed = false;
-    private RecyclerView.AdapterDataObserver adapterDataObserver = new RecyclerView.AdapterDataObserver() {
-        @Override
-        public void onChanged() {
-            BaseAdapter.this.setItems(rawItems);
-        }
 
-        @Override
-        public void onItemRangeChanged(int positionStart, int itemCount) {
-            BaseAdapter.this.setItems(rawItems);
-        }
-
-        @Override
-        public void onItemRangeChanged(int positionStart, int itemCount, Object payload) {
-            BaseAdapter.this.setItems(rawItems);
-        }
-
-        @Override
-        public void onItemRangeInserted(int positionStart, int itemCount) {
-            BaseAdapter.this.setItems(rawItems);
-        }
-
-        @Override
-        public void onItemRangeRemoved(int positionStart, int itemCount) {
-            BaseAdapter.this.setItems(rawItems);
-        }
-
-        @Override
-        public void onItemRangeMoved(int fromPosition, int toPosition, int itemCount) {
-            BaseAdapter.this.setItems(rawItems);
-        }
-    };
-
-    @Override
-    public void registerAdapterDataObserver(RecyclerView.AdapterDataObserver observer) {
-        if(!this.dataObserverRegistered) {
-            super.registerAdapterDataObserver(observer);
-            this.dataObserverRegistered = true;
-        }
-    }
-
-    @Override
-    public void unregisterAdapterDataObserver(RecyclerView.AdapterDataObserver observer) {
-        if(this.dataObserverRegistered) {
-            super.unregisterAdapterDataObserver(observer);
-            this.dataObserverRegistered = false;
-        }
-    }
-
-    public BaseAdapter() {
-        this.registerAdapterDataObserver(adapterDataObserver);
-    }
+    public BaseAdapter() {}
 
     public BaseAdapter(Object[] rawItems) {
-        this.registerAdapterDataObserver(adapterDataObserver);
         this.setItems(rawItems);
     }
 
@@ -118,7 +67,6 @@ public abstract class BaseAdapter extends RecyclerView.Adapter {
     private void initialiseDataSet(Object[] rawItems) {
         this.indexItems(this.generateListItems(rawItems));
         this.clearSelections();
-        this.unregisterAdapterDataObserver(this.adapterDataObserver);
         this.notifyDataSetChanged();
     }
 
@@ -342,6 +290,7 @@ public abstract class BaseAdapter extends RecyclerView.Adapter {
         @Override
         public void onClick(View view) {
             BaseAdapter.this.itemKeyClicked(BaseAdapter.this.getItemKey(this.boundPosition));
+            BaseAdapter.this.MAIN_HANDLER.post(this.updateTask);
         }
     }
 
