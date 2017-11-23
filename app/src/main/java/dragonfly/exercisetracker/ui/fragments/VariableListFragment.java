@@ -20,7 +20,6 @@ import javax.inject.Inject;
 import dragonfly.exercisetracker.ExerciseApplication;
 import dragonfly.exercisetracker.R;
 import dragonfly.exercisetracker.data.database.models.DVariable;
-import dragonfly.exercisetracker.ui.activities.MainActivity;
 import dragonfly.exercisetracker.ui.activities.VariableActivity;
 import dragonfly.exercisetracker.ui.views.recyclerviews.adapters.BaseAdapter;
 import dragonfly.exercisetracker.ui.views.recyclerviews.adapters.VariableAdapter;
