@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -15,8 +16,11 @@ import javax.inject.Inject;
 
 import dragonfly.exercisetracker.R;
 import dragonfly.exercisetracker.ExerciseApplication;
+import dragonfly.exercisetracker.data.database.RealmWrapper;
 import dragonfly.exercisetracker.data.database.models.DDataType;
+import dragonfly.exercisetracker.data.database.models.DVariable;
 import dragonfly.exercisetracker.data.intents.ContractKeyIntent;
+import io.realm.Realm;
 
 public class VariableActivity extends AppCompatActivity {
     @Inject
@@ -24,6 +28,7 @@ public class VariableActivity extends AppCompatActivity {
     private boolean busRegistered = false;
     private Toolbar toolbar;
     private LinearLayout dataTypeLl;
+    private EditText nameEt;
     private TextView dataTypeTv;
     private DDataType dataType;
 
@@ -55,6 +60,7 @@ public class VariableActivity extends AppCompatActivity {
             }
         });
 
+        this.nameEt = (EditText)this.findViewById(R.id.name_et);
         this.dataTypeTv = (TextView)this.findViewById(R.id.data_type_tv);
     }
 
@@ -63,6 +69,9 @@ public class VariableActivity extends AppCompatActivity {
         if(!this.busRegistered) {
             this.bus.register(this);
             this.busRegistered = true;
+        }
+        if(this.nameEt.getText().length() > 0 && this.dataTypeTv.length() > 0) {
+            RealmWrapper.saveObject(Realm.getDefaultInstance(), new DVariable(this.nameEt.getText().toString(), this.dataType));
         }
     }
 

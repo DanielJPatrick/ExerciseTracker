@@ -66,12 +66,7 @@ public class VariableListFragment extends Fragment implements BaseAdapter.OnItem
 
         this.variableRv = (RecyclerView) rootView.findViewById(R.id.recycler_view);
         this.variableRv.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL, false));
-        final RealmResults<DVariable> realmResults = Realm.getDefaultInstance().where(DVariable.class).findAll();
-        if(realmResults.isEmpty()) {
-            this.variableRv.setAdapter(new VariableAdapter(new DVariable[0]));
-        } else {
-            this.variableRv.setAdapter(new VariableAdapter((DVariable[]) realmResults.toArray()));
-        }
+        this.variableRv.setAdapter(new VariableAdapter(new DVariable[0]));
 
         rootView.findViewById(R.id.new_fab).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,6 +93,8 @@ public class VariableListFragment extends Fragment implements BaseAdapter.OnItem
             this.bus.register(this);
             this.busRegistered = true;
         }
+        final RealmResults<DVariable> realmResults = Realm.getDefaultInstance().where(DVariable.class).findAll();
+        ((VariableAdapter)this.variableRv.getAdapter()).setItems(realmResults.toArray(new DVariable[realmResults.size()]));
     }
 
     @Override
