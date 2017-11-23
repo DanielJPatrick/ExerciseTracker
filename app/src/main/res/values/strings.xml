@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">ExerciseTracker</string>
+
+    <string name="timetable">Timetable</string>
+    <string name="schedules">Schedules</string>
+    <string name="schedule">Schedule</string>
+    <string name="routines">Routines</string>
+    <string name="routine">Routine</string>
+    <string name="workouts">Workouts</string>
+    <string name="workout">Workout</string>
+    <string name="exercises">Exercises</string>
+    <string name="exercise">Exercise</string>
+    <string name="variables">Variables</string>
+    <string name="variable">Variable</string>
+    <string name="exit">Exit</string>
+
+
+    <string name="drawer_open">""</string>
+    <string name="drawer_close">""</string>
+
+    <string name="name">Name</string>
+    <string name="value">Value</string>
+    <string name="data_type">Data Type</string>
+    <string name="data_types">Data Types</string>
+
+</resources>
