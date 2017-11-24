@@ -20,6 +20,7 @@ import javax.inject.Inject;
 import dragonfly.exercisetracker.ExerciseApplication;
 import dragonfly.exercisetracker.R;
 import dragonfly.exercisetracker.data.database.models.DVariable;
+import dragonfly.exercisetracker.data.intents.ContractKeyIntent;
 import dragonfly.exercisetracker.ui.activities.VariableActivity;
 import dragonfly.exercisetracker.ui.views.recyclerviews.adapters.BaseAdapter;
 import dragonfly.exercisetracker.ui.views.recyclerviews.adapters.VariableAdapter;
@@ -63,16 +64,16 @@ public class VariableListFragment extends Fragment implements BaseAdapter.OnItem
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_variable_list, container, false);
 
-        this.variableRv = (RecyclerView) rootView.findViewById(R.id.recycler_view);
+        this.variableRv = (RecyclerView)rootView.findViewById(R.id.recycler_view);
         this.variableRv.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL, false));
         this.variableRv.setAdapter(new VariableAdapter(new DVariable[0]));
+        ((VariableAdapter)this.variableRv.getAdapter()).addOnItemSelectedListener(this);
 
         rootView.findViewById(R.id.new_fab).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent showHomeActivityIntent = new Intent(VariableListFragment.this.getActivity(), VariableActivity.class);
-                showHomeActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                VariableListFragment.this.getActivity().startActivity(showHomeActivityIntent);
+                Intent showVariableActivityIntent = new Intent(VariableListFragment.this.getActivity(), VariableActivity.class);
+                VariableListFragment.this.getActivity().startActivity(showVariableActivityIntent);
             }
         });
 
@@ -112,6 +113,8 @@ public class VariableListFragment extends Fragment implements BaseAdapter.OnItem
 
     @Override
     public void onItemSelected(BaseAdapter.BaseViewHolder viewHolder, Object item) {
-
+        Intent showVariableActivityIntent = new Intent(VariableListFragment.this.getActivity(), VariableActivity.class);
+        showVariableActivityIntent.putExtra(ContractKeyIntent.VariableActivity.SELECTED_VARIABLE, ((VariableAdapter.VariableViewBinder)item).variable.getPrimaryKey());
+        VariableListFragment.this.getActivity().startActivity(showVariableActivityIntent);
     }
 }

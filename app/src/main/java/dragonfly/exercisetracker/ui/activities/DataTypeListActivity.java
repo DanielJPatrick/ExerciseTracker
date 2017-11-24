@@ -50,6 +50,8 @@ public class DataTypeListActivity extends AppCompatActivity {
         this.dataTypeRv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         DDataType[] dataTypes = new DDataType[DDataType.DataType.values().length];
         for(int index = 0; index < DDataType.DataType.values().length; index++) {
+            //dataTypes[index] = Realm.getDefaultInstance().createObject(DDataType.class);
+            //dataTypes[index].setValue(DDataType.DataType.values()[index].ordinal());
             dataTypes[index] = new DDataType(DDataType.DataType.values()[index].ordinal());
             try {
                 dataTypes[index].setPrimaryKey(index + 1L);
@@ -69,7 +71,7 @@ public class DataTypeListActivity extends AppCompatActivity {
 
         } else if(this.getIntent() != null) {
             if(this.getIntent().hasExtra(ContractKeyIntent.VariableActivity.SELECTED_DATA_TYPE)) {
-                ((DataTypeAdapter)dataTypeRv.getAdapter()).setSelected(this.getIntent().getSerializableExtra(ContractKeyIntent.VariableActivity.SELECTED_DATA_TYPE));
+                ((DataTypeAdapter)dataTypeRv.getAdapter()).setSelected(Realm.getDefaultInstance().where(DDataType.class).equalTo(DIModel.PRIMARY_KEY, (Long)this.getIntent().getSerializableExtra(ContractKeyIntent.VariableActivity.SELECTED_DATA_TYPE)).findFirst());
             }
         }
     }

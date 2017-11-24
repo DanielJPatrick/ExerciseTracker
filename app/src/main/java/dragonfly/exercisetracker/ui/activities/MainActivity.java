@@ -82,30 +82,6 @@ public class MainActivity extends AppCompatActivity implements BaseAdapter.OnIte
         this.drawerToggle.setDrawerIndicatorEnabled(true);
         this.drawerLayout.addDrawerListener(this.drawerToggle);
         this.drawerToggle.syncState();
-
-        Realm.getDefaultInstance().executeTransactionAsync(new Realm.Transaction() {
-            @Override
-            public void execute(Realm bgRealm) {
-                DSchedule schedule1 = new DSchedule("test2");
-                RealmWrapper.saveObject(bgRealm, schedule1);
-            }
-        }, new Realm.Transaction.OnSuccess() {
-            @Override
-            public void onSuccess() {
-                // Transaction was a success.
-                DSchedule schedule = Realm.getDefaultInstance().where(DSchedule.class).equalTo(DIModel.PRIMARY_KEY, 5L).findFirst();
-                if(schedule != null) {
-                    Log.d(this.getClass().getName(), "onSuccess()" + schedule.getPrimaryKey());
-                }
-            }
-        }, new Realm.Transaction.OnError() {
-            @Override
-            public void onError(Throwable error) {
-                // Transaction failed and was automatically canceled.
-                Log.d(this.getClass().getName(), "onError()", error);
-            }
-        });
-
     }
 
     @Override

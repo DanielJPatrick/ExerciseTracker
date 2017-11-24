@@ -1,6 +1,7 @@
 package dragonfly.exercisetracker.ui.views.recyclerviews.adapters;
 
 
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +11,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import dragonfly.exercisetracker.R;
-import dragonfly.exercisetracker.data.database.models.DDataType;
 import dragonfly.exercisetracker.data.database.models.DVariable;
 
 public class VariableAdapter extends BaseAdapter {
@@ -52,10 +52,12 @@ public class VariableAdapter extends BaseAdapter {
     }
 
     private class VariableViewHolder extends BaseViewHolder {
+        private View itemView;
         private TextView nameTv;
 
         public VariableViewHolder(View itemView) {
             super(itemView);
+            this.itemView = itemView;
             this.nameTv = (TextView)itemView.findViewById(R.id.name_tv);
         }
 
@@ -65,8 +67,8 @@ public class VariableAdapter extends BaseAdapter {
         }
     }
 
-    private class VariableViewBinder extends BaseViewBinder {
-        private DVariable variable;
+    public class VariableViewBinder extends BaseViewBinder {
+        public DVariable variable;
 
         public VariableViewBinder(DVariable variable) {
             this.variable = variable;

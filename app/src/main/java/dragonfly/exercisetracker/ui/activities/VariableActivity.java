@@ -18,6 +18,7 @@ import dragonfly.exercisetracker.R;
 import dragonfly.exercisetracker.ExerciseApplication;
 import dragonfly.exercisetracker.data.database.RealmWrapper;
 import dragonfly.exercisetracker.data.database.models.DDataType;
+import dragonfly.exercisetracker.data.database.models.DIModel;
 import dragonfly.exercisetracker.data.database.models.DVariable;
 import dragonfly.exercisetracker.data.intents.ContractKeyIntent;
 import io.realm.Realm;
@@ -31,6 +32,7 @@ public class VariableActivity extends AppCompatActivity {
     private EditText nameEt;
     private TextView dataTypeTv;
     private DDataType dataType;
+    private DVariable variable;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -54,7 +56,7 @@ public class VariableActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent showDataTypeListActivityIntent = new Intent(VariableActivity.this, DataTypeListActivity.class);
                 if(dataType != null) {
-                    showDataTypeListActivityIntent.putExtra(ContractKeyIntent.VariableActivity.SELECTED_DATA_TYPE, VariableActivity.this.dataType);
+                    showDataTypeListActivityIntent.putExtra(ContractKeyIntent.VariableActivity.SELECTED_DATA_TYPE, VariableActivity.this.dataType.getPrimaryKey());
                 }
                 VariableActivity.this.startActivityForResult(showDataTypeListActivityIntent, ContractKeyIntent.VariableActivity.DATA_TYPE_LIST_ACTIVITY_REQUEST_CODE);
             }
@@ -62,6 +64,13 @@ public class VariableActivity extends AppCompatActivity {
 
         this.nameEt = (EditText)this.findViewById(R.id.name_et);
         this.dataTypeTv = (TextView)this.findViewById(R.id.data_type_tv);
+
+        if(this.getIntent() != null && this.getIntent().hasExtra(ContractKeyIntent.VariableActivity.SELECTED_VARIABLE)) {
+            this.variable = Realm.getDefaultInstance().where(DVariable.class).equalTo(DIModel.PRIMARY_KEY, (Long)this.getIntent().getSerializableExtra(ContractKeyIntent.VariableActivity.SELECTED_VARIABLE)).findFirst();
+            this.dataType = this.variable.getDataType();
+            this.nameEt.setText(this.variable.getName());
+            this.dataTypeTv.setText(DDataType.getDataType(this.variable.getDataType().getValue()).name());
+        }
     }
 
     protected void onResume() {
@@ -69,9 +78,6 @@ public class VariableActivity extends AppCompatActivity {
         if(!this.busRegistered) {
             this.bus.register(this);
             this.busRegistered = true;
-        }
-        if(this.nameEt.getText().length() > 0 && this.dataTypeTv.length() > 0) {
-            RealmWrapper.saveObject(Realm.getDefaultInstance(), new DVariable(this.nameEt.getText().toString(), this.dataType));
         }
     }
 
@@ -81,6 +87,18 @@ public class VariableActivity extends AppCompatActivity {
         if(this.busRegistered) {
             this.bus.unregister(this);
             this.busRegistered = false;
+        }
+        if(this.nameEt.getText().length() > 0 && this.dataTypeTv.length() > 0) {
+            if(this.variable == null) {
+                this.variable = new DVariable(this.nameEt.getText().toString(), this.dataType);
+                RealmWrapper.saveObject(Realm.getDefaultInstance(), this.variable);
+            } else {
+                Realm.getDefaultInstance().beginTransaction();
+                this.variable = Realm.getDefaultInstance().where(DVariable.class).equalTo(DIModel.PRIMARY_KEY, this.variable.getPrimaryKey()).findFirst();
+                this.variable.setName(this.nameEt.getText().toString());
+                this.variable.setDataType(Realm.getDefaultInstance().where(DDataType.class).equalTo(DIModel.PRIMARY_KEY, this.dataType.getPrimaryKey()).findFirst());
+                Realm.getDefaultInstance().commitTransaction();
+            }
         }
     }
 
@@ -96,6 +114,7 @@ public class VariableActivity extends AppCompatActivity {
         if(requestCode == ContractKeyIntent.VariableActivity.DATA_TYPE_LIST_ACTIVITY_REQUEST_CODE) {
             if(data != null && data.hasExtra(ContractKeyIntent.VariableActivity.SELECTED_DATA_TYPE)) {
                 this.dataType = (DDataType)data.getSerializableExtra(ContractKeyIntent.VariableActivity.SELECTED_DATA_TYPE);
+                //this.variable.setDataType(Realm.getDefaultInstance().where(DDataType.class).equalTo(DIModel.PRIMARY_KEY, this.dataType.getPrimaryKey()).findFirst());
                 dataTypeTv.setText(DDataType.getDataType(this.dataType.getValue()).name());
             }
         }

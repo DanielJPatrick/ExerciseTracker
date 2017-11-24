@@ -22,7 +22,8 @@
             android:textSize="16sp"
             android:maxLength="10"
             android:digits="1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ "
-            android:inputType="textCapCharacters"/>
+            android:inputType="textCapCharacters"
+            android:textColor="@color/primary"/>
     </android.support.design.widget.TextInputLayout>
 
     <LinearLayout
@@ -51,7 +52,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
-                    android:textColor="@color/black_26"
+                    android:textColor="@color/accent"
                     android:text="@string/data_type"
                     android:clickable="false"
                     />
@@ -61,7 +62,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
-                    android:textColor="@color/black_54"
+                    android:textColor="@color/primary"
                     tools:text="String"
                     android:clickable="false"
                     />
