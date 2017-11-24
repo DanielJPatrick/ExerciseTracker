@@ -1,17 +1,19 @@
 package dragonfly.exercisetracker.ui.views.recyclerviews.adapters;
 
-
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import dragonfly.exercisetracker.R;
-import dragonfly.exercisetracker.data.database.models.DDataType;
+import dragonfly.exercisetracker.data.database.models.DIModel;
 import dragonfly.exercisetracker.data.database.models.DVariable;
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 public class VariableAdapter extends BaseAdapter {
     private static final int VARIABLE_VH_TYPE = 1;
@@ -52,15 +54,25 @@ public class VariableAdapter extends BaseAdapter {
     }
 
     private class VariableViewHolder extends BaseViewHolder {
+        private View itemView;
         private TextView nameTv;
-        private TextView valueTv;
-        private TextView dataTypeTv;
+        private ImageView deleteIv;
 
         public VariableViewHolder(View itemView) {
             super(itemView);
+            this.itemView = itemView;
             this.nameTv = (TextView)itemView.findViewById(R.id.name_tv);
-            this.valueTv = (TextView)itemView.findViewById(R.id.value_tv);
-            this.dataTypeTv = (TextView)itemView.findViewById(R.id.data_type_tv);
+            this.deleteIv = (ImageView)itemView.findViewById(R.id.delete_Iv);
+            this.deleteIv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Realm.getDefaultInstance().beginTransaction();
+                    Realm.getDefaultInstance().where(DVariable.class).equalTo(DIModel.PRIMARY_KEY, VariableViewHolder.this.getViewBinder().variable.getPrimaryKey()).findAll().deleteAllFromRealm();
+                    Realm.getDefaultInstance().commitTransaction();
+                    RealmResults<DVariable> realmResults = Realm.getDefaultInstance().where(DVariable.class).findAll();
+                    VariableAdapter.this.setItems(realmResults.toArray(new DVariable[realmResults.size()]));
+                }
+            });
         }
 
         @Override
@@ -69,8 +81,8 @@ public class VariableAdapter extends BaseAdapter {
         }
     }
 
-    private class VariableViewBinder extends BaseViewBinder {
-        private DVariable variable;
+    public class VariableViewBinder extends BaseViewBinder {
+        public DVariable variable;
 
         public VariableViewBinder(DVariable variable) {
             this.variable = variable;
@@ -79,8 +91,6 @@ public class VariableAdapter extends BaseAdapter {
         @Override
         public void bind(BaseViewHolder viewHolder) {
             ((VariableViewHolder)viewHolder).nameTv.setText(this.variable.getName());
-            //((VariableViewHolder)viewHolder).valueTv.setText(this.variable.getValue());
-            ((VariableViewHolder)viewHolder).dataTypeTv.setText(DDataType.getDataType(this.variable.getDataType().getValue()).name());
         }
     }
 }

@@ -44,6 +44,10 @@ public class DVariable implements DIModel, Serializable {
         return dataType;
     }
 
+    public void setDataType(DDataType dataType) {
+        this.dataType = dataType;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if(obj == null) {

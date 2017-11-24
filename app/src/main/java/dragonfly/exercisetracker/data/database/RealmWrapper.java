@@ -26,7 +26,9 @@ public abstract class RealmWrapper {
                     e.printStackTrace();
                 }
             }
-            realm.copyToRealm(object);
+            realm.beginTransaction();
+            realm.copyToRealmOrUpdate(object);
+            realm.commitTransaction();
         }
     }
 }

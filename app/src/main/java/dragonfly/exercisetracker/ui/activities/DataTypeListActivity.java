@@ -14,10 +14,13 @@ import javax.inject.Inject;
 
 import dragonfly.exercisetracker.ExerciseApplication;
 import dragonfly.exercisetracker.R;
+import dragonfly.exercisetracker.data.database.RealmWrapper;
 import dragonfly.exercisetracker.data.database.models.DDataType;
+import dragonfly.exercisetracker.data.database.models.DIModel;
 import dragonfly.exercisetracker.data.intents.ContractKeyIntent;
 import dragonfly.exercisetracker.ui.views.recyclerviews.adapters.BaseAdapter;
 import dragonfly.exercisetracker.ui.views.recyclerviews.adapters.DataTypeAdapter;
+import io.realm.Realm;
 
 public class DataTypeListActivity extends AppCompatActivity {
     @Inject
@@ -47,7 +50,13 @@ public class DataTypeListActivity extends AppCompatActivity {
         this.dataTypeRv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         DDataType[] dataTypes = new DDataType[DDataType.DataType.values().length];
         for(int index = 0; index < DDataType.DataType.values().length; index++) {
+            //dataTypes[index] = Realm.getDefaultInstance().createObject(DDataType.class);
+            //dataTypes[index].setValue(DDataType.DataType.values()[index].ordinal());
             dataTypes[index] = new DDataType(DDataType.DataType.values()[index].ordinal());
+            try {
+                dataTypes[index].setPrimaryKey(index + 1L);
+            } catch (DIModel.PrimaryKeyException e) {}
+            RealmWrapper.saveObject(Realm.getDefaultInstance(), dataTypes[index]);
         }
         DataTypeAdapter dataTypeAdapter = new DataTypeAdapter(dataTypes);
         dataTypeAdapter.addOnItemSelectedListener(new BaseAdapter.OnItemSelectedListener() {
@@ -62,7 +71,7 @@ public class DataTypeListActivity extends AppCompatActivity {
 
         } else if(this.getIntent() != null) {
             if(this.getIntent().hasExtra(ContractKeyIntent.VariableActivity.SELECTED_DATA_TYPE)) {
-                ((DataTypeAdapter)dataTypeRv.getAdapter()).setSelected(this.getIntent().getSerializableExtra(ContractKeyIntent.VariableActivity.SELECTED_DATA_TYPE));
+                ((DataTypeAdapter)dataTypeRv.getAdapter()).setSelected(Realm.getDefaultInstance().where(DDataType.class).equalTo(DIModel.PRIMARY_KEY, (Long)this.getIntent().getSerializableExtra(ContractKeyIntent.VariableActivity.SELECTED_DATA_TYPE)).findFirst());
             }
         }
     }
