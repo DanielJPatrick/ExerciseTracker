@@ -1,17 +1,19 @@
 package dragonfly.exercisetracker.ui.views.recyclerviews.adapters;
 
-
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import dragonfly.exercisetracker.R;
+import dragonfly.exercisetracker.data.database.models.DIModel;
 import dragonfly.exercisetracker.data.database.models.DVariable;
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 public class VariableAdapter extends BaseAdapter {
     private static final int VARIABLE_VH_TYPE = 1;
@@ -54,11 +56,23 @@ public class VariableAdapter extends BaseAdapter {
     private class VariableViewHolder extends BaseViewHolder {
         private View itemView;
         private TextView nameTv;
+        private ImageView deleteIv;
 
         public VariableViewHolder(View itemView) {
             super(itemView);
             this.itemView = itemView;
             this.nameTv = (TextView)itemView.findViewById(R.id.name_tv);
+            this.deleteIv = (ImageView)itemView.findViewById(R.id.delete_Iv);
+            this.deleteIv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Realm.getDefaultInstance().beginTransaction();
+                    Realm.getDefaultInstance().where(DVariable.class).equalTo(DIModel.PRIMARY_KEY, VariableViewHolder.this.getViewBinder().variable.getPrimaryKey()).findAll().deleteAllFromRealm();
+                    Realm.getDefaultInstance().commitTransaction();
+                    RealmResults<DVariable> realmResults = Realm.getDefaultInstance().where(DVariable.class).findAll();
+                    VariableAdapter.this.setItems(realmResults.toArray(new DVariable[realmResults.size()]));
+                }
+            });
         }
 
         @Override
