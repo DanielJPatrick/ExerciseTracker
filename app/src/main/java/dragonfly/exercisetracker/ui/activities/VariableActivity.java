@@ -87,11 +87,9 @@ public class VariableActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // Check which request we're responding to
         if(requestCode == ContractKeyIntent.VariableActivity.DATA_TYPE_LIST_ACTIVITY_REQUEST_CODE) {
             if(data != null && data.hasExtra(ContractKeyIntent.VariableActivity.SELECTED_DATA_TYPE)) {
                 this.dataType = (DDataType)data.getSerializableExtra(ContractKeyIntent.VariableActivity.SELECTED_DATA_TYPE);
-                //this.variable.setDataType(Realm.getDefaultInstance().where(DDataType.class).equalTo(DIModel.PRIMARY_KEY, this.dataType.getPrimaryKey()).findFirst());
                 dataTypeTv.setText(DDataType.getDataType(this.dataType.getValue()).name());
             }
         }
