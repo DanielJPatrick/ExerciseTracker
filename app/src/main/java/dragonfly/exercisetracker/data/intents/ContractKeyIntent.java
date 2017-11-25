@@ -7,4 +7,8 @@ public class ContractKeyIntent {
         public static final String SELECTED_DATA_TYPE = "SelectedDataType";
         public static final String SELECTED_VARIABLE = "SelectedVariable";
     }
+
+    public static abstract class ExerciseActivity {
+        public static final String SELECTED_EXERCISE = "SelectedExercise";
+    }
 }
