@@ -2,13 +2,11 @@ package dragonfly.exercisetracker.data.database.models;
 
 import android.annotation.SuppressLint;
 
-import java.io.Serializable;
-
 import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.RealmClass;
 
 @RealmClass
-public class DDataType implements DIModel, Serializable {
+public class DDataType implements DIModel {
     @PrimaryKey @SuppressWarnings("UnnecessaryBoxing") @SuppressLint("UseValueOf")
     private Long primaryKey;
     private Integer value;

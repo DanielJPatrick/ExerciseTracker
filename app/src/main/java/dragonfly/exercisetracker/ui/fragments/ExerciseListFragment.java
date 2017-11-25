@@ -1,6 +1,5 @@
 package dragonfly.exercisetracker.ui.fragments;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,27 +11,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.squareup.otto.Bus;
-
-import javax.inject.Inject;
-
-import dragonfly.exercisetracker.ExerciseApplication;
 import dragonfly.exercisetracker.R;
 import dragonfly.exercisetracker.data.database.models.DExercise;
-import dragonfly.exercisetracker.data.database.models.DVariable;
 import dragonfly.exercisetracker.data.intents.ContractKeyIntent;
 import dragonfly.exercisetracker.ui.activities.ExerciseActivity;
 import dragonfly.exercisetracker.ui.views.recyclerviews.adapters.BaseAdapter;
 import dragonfly.exercisetracker.ui.views.recyclerviews.adapters.ExerciseAdapter;
-import dragonfly.exercisetracker.ui.views.recyclerviews.adapters.VariableAdapter;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
 
 public class ExerciseListFragment extends Fragment implements BaseAdapter.OnItemSelectedListener {
-
-    @Inject Bus bus;
-    private boolean busRegistered = false;
     private RecyclerView exerciseRv;
 
     public static ExerciseListFragment newInstance() {
@@ -74,14 +63,6 @@ public class ExerciseListFragment extends Fragment implements BaseAdapter.OnItem
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        ((ExerciseApplication) context.getApplicationContext()).dependencyGraph.inject(this);
-        this.bus.register(this);
-        this.busRegistered = true;
-    }
-
-    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         ((AppCompatActivity)this.getActivity()).getSupportActionBar().setTitle(R.string.exercises);
@@ -90,21 +71,8 @@ public class ExerciseListFragment extends Fragment implements BaseAdapter.OnItem
     @Override
     public void onResume() {
         super.onResume();
-        if(!this.busRegistered) {
-            this.bus.register(this);
-            this.busRegistered = true;
-        }
         RealmResults<DExercise> realmResults = Realm.getDefaultInstance().where(DExercise.class).findAll();
         ((ExerciseAdapter)this.exerciseRv.getAdapter()).setItems(realmResults.toArray(new DExercise[realmResults.size()]));
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        if(this.busRegistered) {
-            this.bus.unregister(this);
-            this.busRegistered = false;
-        }
     }
 
     @Override

@@ -1,13 +1,11 @@
 package dragonfly.exercisetracker.data.database.models;
 
-import java.io.Serializable;
-
 import io.realm.RealmList;
 import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.RealmClass;
 
 @RealmClass
-public class DRoutine implements DIModel, Serializable {
+public class DRoutine implements DIModel {
 
     @PrimaryKey
     private Long primaryKey;

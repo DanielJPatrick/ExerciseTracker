@@ -8,11 +8,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
-import com.squareup.otto.Bus;
-
-import javax.inject.Inject;
-
-import dragonfly.exercisetracker.ExerciseApplication;
 import dragonfly.exercisetracker.R;
 import dragonfly.exercisetracker.data.database.RealmWrapper;
 import dragonfly.exercisetracker.data.database.models.DDataType;
@@ -23,9 +18,6 @@ import dragonfly.exercisetracker.ui.views.recyclerviews.adapters.DataTypeAdapter
 import io.realm.Realm;
 
 public class DataTypeListActivity extends AppCompatActivity {
-    @Inject
-    Bus bus;
-    private boolean busRegistered = false;
     private Toolbar toolbar;
     private RecyclerView dataTypeRv;
     private DDataType selectedDataType;
@@ -34,9 +26,6 @@ public class DataTypeListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_data_type_list);
-        ((ExerciseApplication) this.getApplication()).dependencyGraph.inject(this);
-        this.bus.register(this);
-        this.busRegistered = true;
 
         this.toolbar = (Toolbar)this.findViewById(R.id.toolbar);
         this.setSupportActionBar(toolbar);
@@ -79,23 +68,6 @@ public class DataTypeListActivity extends AppCompatActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-    }
-
-    protected void onResume() {
-        super.onResume();
-        if(!this.busRegistered) {
-            this.bus.register(this);
-            this.busRegistered = true;
-        }
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if(this.busRegistered) {
-            this.bus.unregister(this);
-            this.busRegistered = false;
-        }
     }
 
     @Override
