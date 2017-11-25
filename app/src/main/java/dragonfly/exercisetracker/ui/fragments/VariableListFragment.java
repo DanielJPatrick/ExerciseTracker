@@ -93,7 +93,7 @@ public class VariableListFragment extends Fragment implements BaseAdapter.OnItem
             this.bus.register(this);
             this.busRegistered = true;
         }
-        final RealmResults<DVariable> realmResults = Realm.getDefaultInstance().where(DVariable.class).findAll();
+        RealmResults<DVariable> realmResults = Realm.getDefaultInstance().where(DVariable.class).findAll();
         ((VariableAdapter)this.variableRv.getAdapter()).setItems(realmResults.toArray(new DVariable[realmResults.size()]));
     }
 

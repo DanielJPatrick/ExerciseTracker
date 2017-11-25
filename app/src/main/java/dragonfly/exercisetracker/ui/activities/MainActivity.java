@@ -21,6 +21,7 @@ import dragonfly.exercisetracker.R;
 import dragonfly.exercisetracker.data.database.RealmWrapper;
 import dragonfly.exercisetracker.data.database.models.DIModel;
 import dragonfly.exercisetracker.data.database.models.DSchedule;
+import dragonfly.exercisetracker.ui.fragments.ExerciseListFragment;
 import dragonfly.exercisetracker.ui.fragments.TimetableFragment;
 import dragonfly.exercisetracker.ui.fragments.VariableListFragment;
 import dragonfly.exercisetracker.ui.views.recyclerviews.adapters.BaseAdapter;
@@ -142,7 +143,9 @@ public class MainActivity extends AppCompatActivity implements BaseAdapter.OnIte
             } else if(((DrawerAdapter.Item) item).getName().equals(this.getString(R.string.workouts))) {
 
             } else if(((DrawerAdapter.Item) item).getName().equals(this.getString(R.string.exercises))) {
-
+                this.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        ExerciseListFragment.newInstance(), ExerciseListFragment.class.getName())
+                        .addToBackStack(ExerciseListFragment.class.getName()).commit();
             } else if(((DrawerAdapter.Item) item).getName().equals(this.getString(R.string.variables))) {
                 this.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         VariableListFragment.newInstance(), VariableListFragment.class.getName())

@@ -1,40 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.v4.widget.DrawerLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/drawer_layout"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <include layout="@layout/include_toolbar"/>
+
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <include layout="@layout/include_toolbar"/>
-
-        <LinearLayout
-            android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:theme="@style/TextInputLabel">
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/name_et"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:hint="@string/name"
+            android:textSize="16sp"
+            android:digits="1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ "
+            android:inputType="textCapCharacters"/>
+    </android.support.design.widget.TextInputLayout>
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/exercise_recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-            </android.support.v7.widget.RecyclerView>
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/drawer_recycler_view"
-        android:layout_width="@dimen/drawer_width"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:background="@android:color/white"
-        />
-
-</android.support.v4.widget.DrawerLayout>
+</LinearLayout>
