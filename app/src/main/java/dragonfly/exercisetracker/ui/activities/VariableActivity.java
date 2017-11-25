@@ -10,12 +10,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.squareup.otto.Bus;
-
-import javax.inject.Inject;
-
 import dragonfly.exercisetracker.R;
-import dragonfly.exercisetracker.ExerciseApplication;
 import dragonfly.exercisetracker.data.database.RealmWrapper;
 import dragonfly.exercisetracker.data.database.models.DDataType;
 import dragonfly.exercisetracker.data.database.models.DIModel;
@@ -24,9 +19,6 @@ import dragonfly.exercisetracker.data.intents.ContractKeyIntent;
 import io.realm.Realm;
 
 public class VariableActivity extends AppCompatActivity {
-    @Inject
-    Bus bus;
-    private boolean busRegistered = false;
     private Toolbar toolbar;
     private LinearLayout dataTypeLl;
     private EditText nameEt;
@@ -38,9 +30,6 @@ public class VariableActivity extends AppCompatActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_variable);
-        ((ExerciseApplication) this.getApplication()).dependencyGraph.inject(this);
-        this.bus.register(this);
-        this.busRegistered = true;
 
         this.toolbar = (Toolbar) this.findViewById(R.id.toolbar);
         this.setSupportActionBar(toolbar);
@@ -73,21 +62,9 @@ public class VariableActivity extends AppCompatActivity {
         }
     }
 
-    protected void onResume() {
-        super.onResume();
-        if(!this.busRegistered) {
-            this.bus.register(this);
-            this.busRegistered = true;
-        }
-    }
-
     @Override
     protected void onPause() {
         super.onPause();
-        if(this.busRegistered) {
-            this.bus.unregister(this);
-            this.busRegistered = false;
-        }
         if(this.nameEt.getText().length() > 0 && this.dataTypeTv.length() > 0) {
             if(this.variable == null) {
                 this.variable = new DVariable(this.nameEt.getText().toString(), this.dataType);

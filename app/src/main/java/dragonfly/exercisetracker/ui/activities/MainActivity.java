@@ -1,37 +1,25 @@
 package dragonfly.exercisetracker.ui.activities;
 
 import android.content.res.Configuration;
+import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.support.v7.widget.Toolbar;
 import android.widget.FrameLayout;
 
-import com.squareup.otto.Bus;
-
-import javax.inject.Inject;
-
-import dragonfly.exercisetracker.ExerciseApplication;
 import dragonfly.exercisetracker.R;
-import dragonfly.exercisetracker.data.database.RealmWrapper;
-import dragonfly.exercisetracker.data.database.models.DIModel;
-import dragonfly.exercisetracker.data.database.models.DSchedule;
 import dragonfly.exercisetracker.ui.fragments.ExerciseListFragment;
 import dragonfly.exercisetracker.ui.fragments.TimetableFragment;
 import dragonfly.exercisetracker.ui.fragments.VariableListFragment;
 import dragonfly.exercisetracker.ui.views.recyclerviews.adapters.BaseAdapter;
 import dragonfly.exercisetracker.ui.views.recyclerviews.adapters.DrawerAdapter;
-import io.realm.Realm;
 
 public class MainActivity extends AppCompatActivity implements BaseAdapter.OnItemSelectedListener {
 
-    @Inject Bus bus;
-    private boolean busRegistered = false;
     private Toolbar toolbar;
     private RecyclerView drawerRv;
     private DrawerLayout drawerLayout;
@@ -43,9 +31,6 @@ public class MainActivity extends AppCompatActivity implements BaseAdapter.OnIte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ((ExerciseApplication)this.getApplication()).dependencyGraph.inject(this);
-        this.bus.register(this);
-        this.busRegistered = true;
 
         this.toolbar = (Toolbar)this.findViewById(R.id.toolbar);
         this.setSupportActionBar(toolbar);
@@ -91,24 +76,6 @@ public class MainActivity extends AppCompatActivity implements BaseAdapter.OnIte
         // Sync the toggle state after onRestoreInstanceState has occurred.
         if(this.drawerToggle != null) {
             this.drawerToggle.syncState();
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if(!this.busRegistered) {
-            this.bus.register(this);
-            this.busRegistered = true;
-        }
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if(this.busRegistered) {
-            this.bus.unregister(this);
-            this.busRegistered = false;
         }
     }
 

@@ -1,28 +1,19 @@
 package dragonfly.exercisetracker.ui.fragments;
 
-import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.squareup.otto.Bus;
-
-import javax.inject.Inject;
-
-import dragonfly.exercisetracker.ExerciseApplication;
 import dragonfly.exercisetracker.R;
 
 
 public class TimetableFragment extends Fragment {
-
-    @Inject Bus bus;
-    private boolean busRegistered = false;
     private RecyclerView timetableRv;
 
     public static TimetableFragment newInstance() {
@@ -43,14 +34,6 @@ public class TimetableFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        ((ExerciseApplication) context.getApplicationContext()).dependencyGraph.inject(this);
-        this.bus.register(this);
-        this.busRegistered = true;
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -65,24 +48,6 @@ public class TimetableFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         ((AppCompatActivity) this.getActivity()).getSupportActionBar().setTitle(R.string.timetable);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (!this.busRegistered) {
-            this.bus.register(this);
-            this.busRegistered = true;
-        }
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        if (this.busRegistered) {
-            this.bus.unregister(this);
-            this.busRegistered = false;
-        }
     }
 
     @Override
