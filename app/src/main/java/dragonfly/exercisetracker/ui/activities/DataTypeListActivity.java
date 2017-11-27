@@ -50,7 +50,7 @@ public class DataTypeListActivity extends AppCompatActivity {
         DataTypeAdapter dataTypeAdapter = new DataTypeAdapter(dataTypes);
         dataTypeAdapter.addOnItemSelectedListener(new BaseAdapter.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(BaseAdapter.BaseViewHolder viewHolder, Object item) {
+            public void onItemSelected(BaseAdapter adapter, BaseAdapter.BaseViewHolder viewHolder, Object item) {
                 DataTypeListActivity.this.selectedDataType = ((DataTypeAdapter.DataTypeViewBinder)item).getDatatype();
             }
         });

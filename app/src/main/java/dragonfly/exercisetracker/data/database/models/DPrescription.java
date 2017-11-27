@@ -10,18 +10,18 @@ public class DPrescription implements DIModel {
     @PrimaryKey
     private Long primaryKey;
     private DExercise exercise;
-    private RealmList<DAttribute> attributes;
+    private RealmList<DAttribute> targets;
+    private RealmList<DAttribute> values;
 
     public DPrescription() {}
 
-    public DPrescription(DExercise exercise, RealmList<DAttribute> attributes) {
+    public DPrescription(DExercise exercise) {
         this.exercise = exercise;
-        this.attributes = attributes;
     }
 
     @Override
     public Long getPrimaryKey() {
-        return primaryKey;
+        return this.primaryKey;
     }
 
     @Override @Deprecated
@@ -39,12 +39,20 @@ public class DPrescription implements DIModel {
         this.exercise = exercise;
     }
 
-    public RealmList<DAttribute> getAttributes() {
-        return attributes;
+    public RealmList<DAttribute> getTargets() {
+        return targets;
     }
 
-    public void setAttributes(RealmList<DAttribute> attributes) {
-        this.attributes = attributes;
+    public void setTargets(RealmList<DAttribute> targets) {
+        this.targets = targets;
+    }
+
+    public RealmList<DAttribute> getValues() {
+        return values;
+    }
+
+    public void setValues(RealmList<DAttribute> values) {
+        this.values = values;
     }
 
     @Override
@@ -73,11 +81,20 @@ public class DPrescription implements DIModel {
                 }
             }
         }
-        if(!(this.attributes == null && ((DPrescription)obj).attributes == null)) {
-            if(this.attributes == null || ((DPrescription)obj).attributes == null) {
+        if(!(this.targets == null && ((DPrescription)obj).targets == null)) {
+            if(this.targets == null || ((DPrescription)obj).targets == null) {
                 return false;
             } else {
-                if(!(this.attributes.equals(((DPrescription)obj).attributes))) {
+                if(!(this.targets.equals(((DPrescription)obj).targets))) {
+                    return false;
+                }
+            }
+        }
+        if(!(this.values == null && ((DPrescription)obj).values == null)) {
+            if(this.values == null || ((DPrescription)obj).values == null) {
+                return false;
+            } else {
+                if(!(this.values.equals(((DPrescription)obj).values))) {
                     return false;
                 }
             }
