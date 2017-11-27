@@ -1,6 +1,7 @@
 package dragonfly.exercisetracker.ui.views.recyclerviews.adapters;
 
 
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,14 +13,11 @@ import java.util.ArrayList;
 
 import dragonfly.exercisetracker.R;
 import dragonfly.exercisetracker.data.database.models.DExercise;
-import dragonfly.exercisetracker.data.database.models.DIModel;
-import io.realm.Realm;
-import io.realm.RealmResults;
 
-public class ExerciseAdapter extends BaseAdapter {
+public class WorkoutExerciseSelectorAdapter extends BaseAdapter {
     private static final int EXERCISE_VH_TYPE = 1;
 
-    public ExerciseAdapter(DExercise[] rawItems) {
+    public WorkoutExerciseSelectorAdapter(DExercise[] rawItems) {
         super(rawItems);
     }
 
@@ -30,7 +28,7 @@ public class ExerciseAdapter extends BaseAdapter {
             return null;
         } else {
             for(Object rawItemLooper : rawItems) {
-                items.add(new ExerciseViewBinder((DExercise)rawItemLooper));
+                items.add(new WorkoutExerciseSelectorAdapter.ExerciseViewBinder((DExercise)rawItemLooper));
             }
         }
         return items.toArray();
@@ -38,8 +36,8 @@ public class ExerciseAdapter extends BaseAdapter {
 
     @Override
     public int getItemViewType(int position) {
-        if(super.getItem(position) instanceof ExerciseAdapter.ExerciseViewBinder) {
-            return ExerciseAdapter.EXERCISE_VH_TYPE;
+        if(super.getItem(position) instanceof WorkoutExerciseSelectorAdapter.ExerciseViewBinder) {
+            return WorkoutExerciseSelectorAdapter.EXERCISE_VH_TYPE;
         } else {
             return super.getItemViewType(position);
         }
@@ -48,8 +46,8 @@ public class ExerciseAdapter extends BaseAdapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch(viewType) {
-            case(ExerciseAdapter.EXERCISE_VH_TYPE):
-                return new ExerciseAdapter.ExerciseViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_exercise_list_exercise, parent, false));
+            case(WorkoutExerciseSelectorAdapter.EXERCISE_VH_TYPE):
+                return new WorkoutExerciseSelectorAdapter.ExerciseViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_workout_exercise_list_exercise, parent, false));
         }
         return null;
     }
@@ -63,22 +61,21 @@ public class ExerciseAdapter extends BaseAdapter {
             super(itemView);
             this.itemView = itemView;
             this.nameTv = (TextView)itemView.findViewById(R.id.name_tv);
-            this.deleteIv = (ImageView)itemView.findViewById(R.id.delete_Iv);
-            this.deleteIv.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Realm.getDefaultInstance().beginTransaction();
-                    Realm.getDefaultInstance().where(DExercise.class).equalTo(DIModel.PRIMARY_KEY, ExerciseViewHolder.this.getViewBinder().exercise.getPrimaryKey()).findAll().deleteAllFromRealm();
-                    Realm.getDefaultInstance().commitTransaction();
-                    RealmResults<DExercise> realmResults = Realm.getDefaultInstance().where(DExercise.class).findAll();
-                    ExerciseAdapter.this.setItems(realmResults.toArray(new DExercise[realmResults.size()]));
-                }
-            });
         }
 
         @Override
-        public ExerciseAdapter.ExerciseViewBinder getViewBinder() {
-            return (ExerciseAdapter.ExerciseViewBinder)super.getViewBinder();
+        public dragonfly.exercisetracker.ui.views.recyclerviews.adapters.ExerciseAdapter.ExerciseViewBinder getViewBinder() {
+            return (dragonfly.exercisetracker.ui.views.recyclerviews.adapters.ExerciseAdapter.ExerciseViewBinder)super.getViewBinder();
+        }
+
+        @Override
+        protected void onSelected() {
+            this.itemView.setBackgroundColor(this.itemView.getResources().getColor(R.color.accent));
+        }
+
+        @Override
+        protected void onUnselected() {
+            this.itemView.setBackgroundColor(Color.WHITE);
         }
     }
 
@@ -91,7 +88,7 @@ public class ExerciseAdapter extends BaseAdapter {
 
         @Override
         public void bind(BaseViewHolder viewHolder) {
-            ((ExerciseViewHolder)viewHolder).nameTv.setText(this.exercise.getName());
+            ((WorkoutExerciseSelectorAdapter.ExerciseViewHolder)viewHolder).nameTv.setText(this.exercise.getName());
         }
     }
 }

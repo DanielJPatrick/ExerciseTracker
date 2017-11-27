@@ -54,8 +54,8 @@ public class ExerciseListFragment extends Fragment implements BaseAdapter.OnItem
         rootView.findViewById(R.id.new_fab).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent showVariableActivityIntent = new Intent(ExerciseListFragment.this.getActivity(), ExerciseActivity.class);
-                ExerciseListFragment.this.getActivity().startActivity(showVariableActivityIntent);
+                Intent showExerciseActivityIntent = new Intent(ExerciseListFragment.this.getActivity(), ExerciseActivity.class);
+                ExerciseListFragment.this.getActivity().startActivity(showExerciseActivityIntent);
             }
         });
 
@@ -77,8 +77,8 @@ public class ExerciseListFragment extends Fragment implements BaseAdapter.OnItem
 
     @Override
     public void onItemSelected(BaseAdapter.BaseViewHolder viewHolder, Object item) {
-        Intent showVariableActivityIntent = new Intent(ExerciseListFragment.this.getActivity(), ExerciseActivity.class);
-        showVariableActivityIntent.putExtra(ContractKeyIntent.ExerciseActivity.SELECTED_EXERCISE, ((ExerciseAdapter.ExerciseViewBinder)item).exercise.getPrimaryKey());
-        ExerciseListFragment.this.getActivity().startActivity(showVariableActivityIntent);
+        Intent showExerciseActivityIntent = new Intent(ExerciseListFragment.this.getActivity(), ExerciseActivity.class);
+        showExerciseActivityIntent.putExtra(ContractKeyIntent.ExerciseActivity.SELECTED_EXERCISE, ((ExerciseAdapter.ExerciseViewBinder)item).exercise.getPrimaryKey());
+        ExerciseListFragment.this.getActivity().startActivity(showExerciseActivityIntent);
     }
 }

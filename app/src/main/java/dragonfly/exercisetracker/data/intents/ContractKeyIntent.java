@@ -11,4 +11,8 @@ public class ContractKeyIntent {
     public static abstract class ExerciseActivity {
         public static final String SELECTED_EXERCISE = "SelectedExercise";
     }
+
+    public static abstract class WorkoutActivity {
+        public static final String SELECTED_WORKOUT = "SelectedWorkout";
+    }
 }

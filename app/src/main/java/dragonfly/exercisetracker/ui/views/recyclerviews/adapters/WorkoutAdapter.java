@@ -11,15 +11,15 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import dragonfly.exercisetracker.R;
-import dragonfly.exercisetracker.data.database.models.DExercise;
 import dragonfly.exercisetracker.data.database.models.DIModel;
+import dragonfly.exercisetracker.data.database.models.DWorkout;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
-public class ExerciseAdapter extends BaseAdapter {
-    private static final int EXERCISE_VH_TYPE = 1;
+public class WorkoutAdapter extends BaseAdapter {
+    private static final int WORKOUT_VH_TYPE = 1;
 
-    public ExerciseAdapter(DExercise[] rawItems) {
+    public WorkoutAdapter(DWorkout[] rawItems) {
         super(rawItems);
     }
 
@@ -30,7 +30,7 @@ public class ExerciseAdapter extends BaseAdapter {
             return null;
         } else {
             for(Object rawItemLooper : rawItems) {
-                items.add(new ExerciseViewBinder((DExercise)rawItemLooper));
+                items.add(new WorkoutViewBinder((DWorkout)rawItemLooper));
             }
         }
         return items.toArray();
@@ -38,8 +38,8 @@ public class ExerciseAdapter extends BaseAdapter {
 
     @Override
     public int getItemViewType(int position) {
-        if(super.getItem(position) instanceof ExerciseAdapter.ExerciseViewBinder) {
-            return ExerciseAdapter.EXERCISE_VH_TYPE;
+        if(super.getItem(position) instanceof WorkoutAdapter.WorkoutViewBinder) {
+            return WorkoutAdapter.WORKOUT_VH_TYPE;
         } else {
             return super.getItemViewType(position);
         }
@@ -48,18 +48,18 @@ public class ExerciseAdapter extends BaseAdapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch(viewType) {
-            case(ExerciseAdapter.EXERCISE_VH_TYPE):
-                return new ExerciseAdapter.ExerciseViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_exercise_list_exercise, parent, false));
+            case(WorkoutAdapter.WORKOUT_VH_TYPE):
+                return new WorkoutAdapter.WorkoutViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_workout_list_workout, parent, false));
         }
         return null;
     }
 
-    private class ExerciseViewHolder extends BaseViewHolder {
+    private class WorkoutViewHolder extends BaseViewHolder {
         private View itemView;
         private TextView nameTv;
         private ImageView deleteIv;
 
-        public ExerciseViewHolder(View itemView) {
+        public WorkoutViewHolder(View itemView) {
             super(itemView);
             this.itemView = itemView;
             this.nameTv = (TextView)itemView.findViewById(R.id.name_tv);
@@ -68,30 +68,30 @@ public class ExerciseAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
                     Realm.getDefaultInstance().beginTransaction();
-                    Realm.getDefaultInstance().where(DExercise.class).equalTo(DIModel.PRIMARY_KEY, ExerciseViewHolder.this.getViewBinder().exercise.getPrimaryKey()).findAll().deleteAllFromRealm();
+                    Realm.getDefaultInstance().where(DWorkout.class).equalTo(DIModel.PRIMARY_KEY, WorkoutViewHolder.this.getViewBinder().workout.getPrimaryKey()).findAll().deleteAllFromRealm();
                     Realm.getDefaultInstance().commitTransaction();
-                    RealmResults<DExercise> realmResults = Realm.getDefaultInstance().where(DExercise.class).findAll();
-                    ExerciseAdapter.this.setItems(realmResults.toArray(new DExercise[realmResults.size()]));
+                    RealmResults<DWorkout> realmResults = Realm.getDefaultInstance().where(DWorkout.class).findAll();
+                    WorkoutAdapter.this.setItems(realmResults.toArray(new DWorkout[realmResults.size()]));
                 }
             });
         }
 
         @Override
-        public ExerciseAdapter.ExerciseViewBinder getViewBinder() {
-            return (ExerciseAdapter.ExerciseViewBinder)super.getViewBinder();
+        public WorkoutAdapter.WorkoutViewBinder getViewBinder() {
+            return (WorkoutAdapter.WorkoutViewBinder)super.getViewBinder();
         }
     }
 
-    public class ExerciseViewBinder extends BaseViewBinder {
-        public DExercise exercise;
+    public class WorkoutViewBinder extends BaseViewBinder {
+        public DWorkout workout;
 
-        public ExerciseViewBinder(DExercise exercise) {
-            this.exercise = exercise;
+        public WorkoutViewBinder(DWorkout workout) {
+            this.workout = workout;
         }
 
         @Override
         public void bind(BaseViewHolder viewHolder) {
-            ((ExerciseViewHolder)viewHolder).nameTv.setText(this.exercise.getName());
+            ((WorkoutViewHolder)viewHolder).nameTv.setText(this.workout.getName());
         }
     }
 }

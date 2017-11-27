@@ -15,6 +15,7 @@ import dragonfly.exercisetracker.R;
 import dragonfly.exercisetracker.ui.fragments.ExerciseListFragment;
 import dragonfly.exercisetracker.ui.fragments.TimetableFragment;
 import dragonfly.exercisetracker.ui.fragments.VariableListFragment;
+import dragonfly.exercisetracker.ui.fragments.WorkoutListFragment;
 import dragonfly.exercisetracker.ui.views.recyclerviews.adapters.BaseAdapter;
 import dragonfly.exercisetracker.ui.views.recyclerviews.adapters.DrawerAdapter;
 
@@ -108,7 +109,9 @@ public class MainActivity extends AppCompatActivity implements BaseAdapter.OnIte
             } else if(((DrawerAdapter.Item) item).getName().equals(this.getString(R.string.routines))) {
 
             } else if(((DrawerAdapter.Item) item).getName().equals(this.getString(R.string.workouts))) {
-
+                this.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        WorkoutListFragment.newInstance(), WorkoutListFragment.class.getName())
+                        .addToBackStack(WorkoutListFragment.class.getName()).commit();
             } else if(((DrawerAdapter.Item) item).getName().equals(this.getString(R.string.exercises))) {
                 this.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         ExerciseListFragment.newInstance(), ExerciseListFragment.class.getName())
