@@ -15,6 +15,7 @@ import dragonfly.exercisetracker.R;
 import dragonfly.exercisetracker.ui.fragments.ExerciseListFragment;
 import dragonfly.exercisetracker.ui.fragments.TimetableFragment;
 import dragonfly.exercisetracker.ui.fragments.VariableListFragment;
+import dragonfly.exercisetracker.ui.fragments.WorkoutListFragment;
 import dragonfly.exercisetracker.ui.views.recyclerviews.adapters.BaseAdapter;
 import dragonfly.exercisetracker.ui.views.recyclerviews.adapters.DrawerAdapter;
 
@@ -44,14 +45,14 @@ public class MainActivity extends AppCompatActivity implements BaseAdapter.OnIte
 
         this.drawerRv = (RecyclerView) this.findViewById(R.id.drawer_recycler_view);
 
-        DrawerAdapter.Item items[] = new DrawerAdapter.Item[7];
-        items[0] = new DrawerAdapter.Item(this.getString(R.string.timetable));
-        items[1] = new DrawerAdapter.Item(this.getString(R.string.schedules));
-        items[2] = new DrawerAdapter.Item(this.getString(R.string.routines));
-        items[3] = new DrawerAdapter.Item(this.getString(R.string.workouts));
-        items[4] = new DrawerAdapter.Item(this.getString(R.string.exercises));
-        items[5] = new DrawerAdapter.Item(this.getString(R.string.variables));
-        items[6] = new DrawerAdapter.Item(this.getString(R.string.exit));
+        DrawerAdapter.Item items[] = new DrawerAdapter.Item[4];
+        //items[0] = new DrawerAdapter.Item(this.getString(R.string.timetable));
+        //items[1] = new DrawerAdapter.Item(this.getString(R.string.schedules));
+        //items[2] = new DrawerAdapter.Item(this.getString(R.string.routines));
+        items[0] = new DrawerAdapter.Item(this.getString(R.string.workouts));
+        items[1] = new DrawerAdapter.Item(this.getString(R.string.exercises));
+        items[2] = new DrawerAdapter.Item(this.getString(R.string.variables));
+        items[3] = new DrawerAdapter.Item(this.getString(R.string.exit));
 
         this.drawerAdapter = new DrawerAdapter(items);
         this.drawerAdapter.nullSelectionAllowed = false;
@@ -97,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements BaseAdapter.OnIte
     }
 
     @Override
-    public void onItemSelected(BaseAdapter.BaseViewHolder viewHolder, Object item) {
+    public void onItemSelected(BaseAdapter adapter, BaseAdapter.BaseViewHolder viewHolder, Object item) {
         if(item instanceof DrawerAdapter.Item) {
             if(((DrawerAdapter.Item) item).getName().equals(this.getString(R.string.timetable))) {
                 this.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
@@ -108,7 +109,9 @@ public class MainActivity extends AppCompatActivity implements BaseAdapter.OnIte
             } else if(((DrawerAdapter.Item) item).getName().equals(this.getString(R.string.routines))) {
 
             } else if(((DrawerAdapter.Item) item).getName().equals(this.getString(R.string.workouts))) {
-
+                this.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        WorkoutListFragment.newInstance(), WorkoutListFragment.class.getName())
+                        .addToBackStack(WorkoutListFragment.class.getName()).commit();
             } else if(((DrawerAdapter.Item) item).getName().equals(this.getString(R.string.exercises))) {
                 this.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         ExerciseListFragment.newInstance(), ExerciseListFragment.class.getName())

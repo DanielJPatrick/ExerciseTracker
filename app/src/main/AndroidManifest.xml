@@ -24,13 +24,25 @@
         <activity android:name=".ui.activities.MainActivity"
             android:launchMode="singleTask">
         </activity>
+        <activity android:name=".ui.activities.WorkoutActivity"
+            android:launchMode="singleTask">
+        </activity>
         <activity android:name=".ui.activities.ExerciseActivity"
+            android:launchMode="singleTask">
+        </activity>
+        <activity android:name=".ui.activities.ExerciseListActivity"
             android:launchMode="singleTask">
         </activity>
         <activity android:name=".ui.activities.VariableActivity"
             android:launchMode="singleTask">
         </activity>
         <activity android:name=".ui.activities.DataTypeListActivity"
+            android:launchMode="singleTask">
+        </activity>
+        <activity android:name=".ui.activities.PrescriptionActivity"
+            android:launchMode="singleTask">
+        </activity>
+        <activity android:name=".ui.activities.AttributeActivity"
             android:launchMode="singleTask">
         </activity>
     </application>

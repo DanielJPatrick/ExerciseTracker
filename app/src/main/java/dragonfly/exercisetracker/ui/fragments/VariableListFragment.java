@@ -82,7 +82,7 @@ public class VariableListFragment extends Fragment implements BaseAdapter.OnItem
     }
 
     @Override
-    public void onItemSelected(BaseAdapter.BaseViewHolder viewHolder, Object item) {
+    public void onItemSelected(BaseAdapter adapter, BaseAdapter.BaseViewHolder viewHolder, Object item) {
         Intent showVariableActivityIntent = new Intent(VariableListFragment.this.getActivity(), VariableActivity.class);
         showVariableActivityIntent.putExtra(ContractKeyIntent.VariableActivity.SELECTED_VARIABLE, ((VariableAdapter.VariableViewBinder)item).variable.getPrimaryKey());
         VariableListFragment.this.getActivity().startActivity(showVariableActivityIntent);

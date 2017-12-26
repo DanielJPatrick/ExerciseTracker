@@ -3,7 +3,7 @@ apply plugin: 'realm-android'
 
 buildscript {
     ext {
-        supportLibraryVersion = '25.1.1'
+        supportLibraryVersion = '25.4.0'
     }
     repositories {
         jcenter()
@@ -22,7 +22,7 @@ android {
 
     defaultConfig {
         applicationId "dragonfly.exercisetracker"
-        minSdkVersion 16
+        minSdkVersion 17
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -40,6 +40,7 @@ repositories {
     maven {
         url 'https://github.com/uPhyca/stetho-realm/raw/master/maven-repo'
     }
+    google()
 }
 
 dependencies {
