@@ -63,11 +63,9 @@ public class WorkoutActivity extends AppCompatActivity implements BaseAdapter.On
             this.nameEt.setText(this.workout.getName());
             ((WorkoutPrescriptionAdaptor)this.prescriptionsRv.getAdapter()).setWorkout(this.workout);
             ((WorkoutPrescriptionAdaptor)this.prescriptionsRv.getAdapter()).setItems(this.workout.getPrescriptions().toArray());
-
         }
     }
 
-    @Override
     protected void onPause() {
         super.onPause();
         if(this.nameEt.getText().length() > 0) {
