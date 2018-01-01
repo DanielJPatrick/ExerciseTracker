@@ -13,7 +13,6 @@ import android.widget.FrameLayout;
 
 import dragonfly.exercisetracker.R;
 import dragonfly.exercisetracker.ui.fragments.ExerciseListFragment;
-import dragonfly.exercisetracker.ui.fragments.TimetableFragment;
 import dragonfly.exercisetracker.ui.fragments.VariableListFragment;
 import dragonfly.exercisetracker.ui.fragments.WorkoutListFragment;
 import dragonfly.exercisetracker.ui.views.recyclerviews.adapters.BaseAdapter;
@@ -96,16 +95,8 @@ public class MainActivity extends AppCompatActivity implements BaseAdapter.OnIte
 
     @Override
     public void onItemSelected(BaseAdapter adapter, BaseAdapter.BaseViewHolder viewHolder, Object item) {
-        if(item instanceof DrawerAdapter.Item) {
-            if(((DrawerAdapter.Item) item).getName().equals(this.getString(R.string.timetable))) {
-                this.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        TimetableFragment.newInstance(), TimetableFragment.class.getName())
-                        .addToBackStack(TimetableFragment.class.getName()).commit();
-            } else if(((DrawerAdapter.Item) item).getName().equals(this.getString(R.string.schedules))) {
-
-            } else if(((DrawerAdapter.Item) item).getName().equals(this.getString(R.string.routines))) {
-
-            } else if(((DrawerAdapter.Item) item).getName().equals(this.getString(R.string.workouts))) {
+        if(adapter instanceof DrawerAdapter) {
+            if(((DrawerAdapter.Item) item).getName().equals(this.getString(R.string.workouts))) {
                 this.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         WorkoutListFragment.newInstance(), WorkoutListFragment.class.getName())
                         .addToBackStack(WorkoutListFragment.class.getName()).commit();
