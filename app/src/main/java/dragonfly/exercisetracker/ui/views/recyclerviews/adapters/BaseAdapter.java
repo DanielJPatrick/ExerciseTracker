@@ -189,6 +189,7 @@ public abstract class BaseAdapter extends RecyclerView.Adapter {
         for(Object itemKeyLooper : this.items.keySet()) {
             if(selectedItemKey.equals(itemKeyLooper)) {
                 this.selectedKeys.put(itemKeyLooper, this.getPositionFromKey(itemKeyLooper));
+                this.notifyItemChanged(this.getPositionFromKey(itemKeyLooper));
             }
         }
     }
@@ -202,7 +203,6 @@ public abstract class BaseAdapter extends RecyclerView.Adapter {
     }
 
     public void itemKeyClicked(Object itemKeyClicked) {
-
         if (this.clickable && ((BaseViewHolder)this.boundRecyclerView.findViewHolderForAdapterPosition(this.getPositionFromKey(itemKeyClicked))).clickable) {
             for (OnItemClickedListener onItemClickedListenerLooper : onItemClickedListeners) {
                 onItemClickedListenerLooper.onItemClicked(BaseAdapter.this, ((BaseViewHolder)this.boundRecyclerView.findViewHolderForAdapterPosition(this.getPositionFromKey(itemKeyClicked))), this.getItem(itemKeyClicked));
@@ -212,6 +212,7 @@ public abstract class BaseAdapter extends RecyclerView.Adapter {
                     if (!this.multiSelectionAllowed) {
                         for (Object selectedKeyLooper : this.selectedKeys.keySet()) {
                             if (!(selectedKeyLooper.equals(itemKeyClicked))) {
+                                ((BaseViewHolder)this.boundRecyclerView.findViewHolderForAdapterPosition(this.getPositionFromKey(selectedKeyLooper))).itemView.setSelected(false);
                                 this.selectedKeys.remove(selectedKeyLooper);
                                 this.newUnselectedKeys.put(selectedKeyLooper, this.getPositionFromKey(selectedKeyLooper));
                                 this.notifyItemChanged(this.getPositionFromKey(selectedKeyLooper));
@@ -220,12 +221,14 @@ public abstract class BaseAdapter extends RecyclerView.Adapter {
                     }
                     if (this.selectedKeys.containsKey(itemKeyClicked)) {
                         if (this.selectedKeys.size() > 1 || this.nullSelectionAllowed) {
+                            ((BaseViewHolder)this.boundRecyclerView.findViewHolderForAdapterPosition(this.getPositionFromKey(itemKeyClicked))).itemView.setSelected(false);
                             this.selectedKeys.remove(itemKeyClicked);
                             this.newUnselectedKeys.put(itemKeyClicked, this.getPositionFromKey(itemKeyClicked));
                             this.notifyItemChanged(this.keysToPosition.get(itemKeyClicked));
                         }
                     } else {
                         if (this.selectedKeys.size() < 1 || this.multiSelectionAllowed) {
+                            ((BaseViewHolder)this.boundRecyclerView.findViewHolderForAdapterPosition(this.getPositionFromKey(itemKeyClicked))).itemView.setSelected(true);
                             this.selectedKeys.put(itemKeyClicked, this.getPositionFromKey(itemKeyClicked));
                             this.newSelectedKeys.put(itemKeyClicked, this.getPositionFromKey(itemKeyClicked));
                             this.notifyItemChanged(this.keysToPosition.get(itemKeyClicked));
@@ -234,6 +237,7 @@ public abstract class BaseAdapter extends RecyclerView.Adapter {
                 } else {
                     if (this.nullSelectionAllowed && !this.multiSelectionAllowed) {
                         for (Object selectedKeyLooper : this.selectedKeys.keySet()) {
+                            ((BaseViewHolder)this.boundRecyclerView.findViewHolderForAdapterPosition(this.getPositionFromKey(selectedKeyLooper))).itemView.setSelected(false);
                             this.selectedKeys.remove(selectedKeyLooper);
                             this.newUnselectedKeys.put(selectedKeyLooper, this.getPositionFromKey(selectedKeyLooper));
                             this.notifyItemChanged(this.getPositionFromKey(selectedKeyLooper));
@@ -288,18 +292,11 @@ public abstract class BaseAdapter extends RecyclerView.Adapter {
         public boolean clickable = true;
         public boolean selectable = true;
         protected Integer boundPosition;
-        private Runnable updateTask;
         private BaseViewBinder viewHolderBinder;
 
         protected BaseViewHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
-            this.updateTask = new Runnable() {
-                @Override
-                public void run() {
-                    BaseViewHolder.this.update();
-                }
-            };
         }
 
         public BaseViewBinder getViewBinder() {
@@ -311,17 +308,19 @@ public abstract class BaseAdapter extends RecyclerView.Adapter {
             if(BaseAdapter.this.getItem(this.boundPosition) instanceof BaseViewBinder) {
                 this.viewHolderBinder = (BaseViewBinder)BaseAdapter.this.getItem(this.boundPosition);
             }
-            BaseAdapter.this.MAIN_HANDLER.post(this.updateTask);
+            this.update();
         }
 
         private void update() {
             if(BaseAdapter.this.selectedKeys.containsValue(this.boundPosition)) {
+                this.itemView.setSelected(true);
                 this.onSelected();
                 if(BaseAdapter.this.newSelectedKeys.containsValue(this.boundPosition)) {
                     BaseAdapter.this.newSelectedKeys.remove(BaseAdapter.this.getItemKey(this.boundPosition));
                     BaseAdapter.this.itemSelected(BaseAdapter.this, this, BaseAdapter.this.getItem(this.boundPosition));
                 }
             } else {
+                this.itemView.setSelected(false);
                 this.onUnselected();
                 if(BaseAdapter.this.newUnselectedKeys.containsValue(this.boundPosition)) {
                     BaseAdapter.this.newUnselectedKeys.remove(BaseAdapter.this.getItemKey(this.boundPosition));
@@ -341,7 +340,6 @@ public abstract class BaseAdapter extends RecyclerView.Adapter {
         @Override
         public void onClick(View view) {
             BaseAdapter.this.itemKeyClicked(BaseAdapter.this.getItemKey(this.boundPosition));
-            BaseAdapter.this.MAIN_HANDLER.post(this.updateTask);
         }
     }
 

@@ -78,10 +78,10 @@ public class DDataType implements DIModel, Serializable {
     }
 
     public enum DataType {
-        INTEGER,
-        DOUBLE,
-        BOOLEAN,
-        STRING,
-        DATE
+        Integer,
+        Double,
+        Boolean,
+        String,
+        Date
     }
 }

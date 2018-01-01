@@ -24,5 +24,6 @@
     <string name="data_type">Data Type</string>
     <string name="data_types">Data Types</string>
     <string name="attribute">Attribute</string>
+    <string name="attributes">Attributes</string>
 
 </resources>

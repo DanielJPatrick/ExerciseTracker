@@ -47,28 +47,16 @@ public class DataTypeAdapter extends BaseAdapter {
     }
 
     private class DataTypeViewHolder extends BaseAdapter.BaseViewHolder {
-        private View rootView;
         private TextView nameTv;
 
         public DataTypeViewHolder(View itemView) {
             super(itemView);
-            this.rootView = itemView;
             this.nameTv = (TextView)itemView.findViewById(R.id.name_tv);
         }
 
         @Override
         public DataTypeViewBinder getViewBinder() {
             return (DataTypeViewBinder)super.getViewBinder();
-        }
-
-        @Override
-        protected void onSelected() {
-            this.nameTv.setTextColor(this.nameTv.getContext().getResources().getColor(R.color.primary));
-        }
-
-        @Override
-        protected void onUnselected() {
-            this.nameTv.setTextColor(this.nameTv.getContext().getResources().getColor(R.color.black_100_AEC5D5));
         }
     }
 

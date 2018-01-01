@@ -4,22 +4,22 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="@dimen/padding_1">
+    android:paddingBottom="@dimen/padding_2"
+    >
 
     <TextView
         android:id="@+id/variable_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/primary"
-        android:paddingStart="@dimen/padding_1"
-        android:paddingEnd="@dimen/padding_1"
+        android:textColor="@android:color/black"
+        android:paddingEnd="@dimen/padding_2"
         />
 
     <TextView
         android:id="@+id/value_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/primary"
+        android:textColor="@android:color/black"
         />
 
     <android.support.v4.widget.Space
@@ -33,8 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_clear_accent_24dp"
-        android:paddingStart="@dimen/padding_1"
-        android:paddingEnd="@dimen/padding_1"
+        android:paddingStart="@dimen/padding_2"
         />
 
 </LinearLayout>

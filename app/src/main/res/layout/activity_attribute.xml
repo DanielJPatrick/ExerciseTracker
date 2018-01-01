@@ -5,31 +5,49 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/android:white"
     >
 
     <include layout="@layout/include_toolbar"/>
 
-    <android.support.design.widget.TextInputLayout
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/TextInputLabel">
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/value_et"
+        android:layout_height="match_parent"
+        android:padding="@dimen/padding_1"
+        >
+
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:hint="@string/value"
-            android:textSize="16sp"
-            android:digits="1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ "
-            android:inputType="textCapCharacters"/>
-    </android.support.design.widget.TextInputLayout>
+            android:theme="@style/TextInputLabel">
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/value_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:hint="@string/value"
+                android:textSize="16sp"
+                android:inputType="text"/>
+        </android.support.design.widget.TextInputLayout>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/padding_1"
+            android:paddingBottom="@dimen/padding_2"
+            android:textSize="12sp"
+            android:textColor="@color/accent"
+            android:text="@string/variables"
+            />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    </android.support.v7.widget.RecyclerView>
+        </android.support.v7.widget.RecyclerView>
+
+    </LinearLayout>
 
 </LinearLayout>
