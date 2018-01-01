@@ -37,23 +37,13 @@ public class DrawerAdapter extends BaseAdapter {
 
         private ItemViewHolder(View itemView) {
             super(itemView);
+            itemView.setBackgroundResource(R.drawable.selector_drawer_item_background);
             this.nameTv = (TextView)itemView.findViewById(R.id.name_tv);
         }
 
         private void bind() {
             this.nameTv.setText(((Item)DrawerAdapter.this.getItem(this.boundPosition)).name);
         }
-
-        @Override
-        public void onSelected() {
-            this.nameTv.setText(this.nameTv.getText().toString().toUpperCase());
-        }
-
-        @Override
-        public void onUnselected() {
-            this.nameTv.setText(this.nameTv.getText().toString().toLowerCase());
-        }
-
     }
 
     public static class Item implements BaseAdapter.Item{

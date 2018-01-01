@@ -85,23 +85,25 @@ public class WorkoutActivity extends AppCompatActivity implements BaseAdapter.On
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == ContractKeyIntent.WorkoutActivity.EXERCISE_LIST_ACTIVITY_REQUEST_CODE) {
-            Long exercisePrimaryKey = (Long)data.getSerializableExtra(ContractKeyIntent.ExerciseListActivity.SELECTED_EXERCISE);
-            if(exercisePrimaryKey != null) {
-                DExercise exercise = Realm.getDefaultInstance().where(DExercise.class).equalTo(DIModel.PRIMARY_KEY, exercisePrimaryKey).findFirst();
-                DPrescription newPrescription = new DPrescription(exercise);
-                RealmWrapper.saveObject(Realm.getDefaultInstance(), newPrescription);
-                if (this.workout == null) {
-                    this.workout = new DWorkout(this.nameEt.getText().toString());
-                    this.workout.setPrescriptions(new RealmList<DPrescription>(newPrescription));
-                    RealmWrapper.saveObject(Realm.getDefaultInstance(), this.workout);
-                } else {
-                    Realm.getDefaultInstance().beginTransaction();
-                    if (this.workout.getPrescriptions() == null) {
+            if(data != null) {
+                Long exercisePrimaryKey = (Long) data.getSerializableExtra(ContractKeyIntent.ExerciseListActivity.SELECTED_EXERCISE);
+                if (exercisePrimaryKey != null) {
+                    DExercise exercise = Realm.getDefaultInstance().where(DExercise.class).equalTo(DIModel.PRIMARY_KEY, exercisePrimaryKey).findFirst();
+                    DPrescription newPrescription = new DPrescription(exercise);
+                    RealmWrapper.saveObject(Realm.getDefaultInstance(), newPrescription);
+                    if (this.workout == null) {
+                        this.workout = new DWorkout(this.nameEt.getText().toString());
                         this.workout.setPrescriptions(new RealmList<DPrescription>(newPrescription));
+                        RealmWrapper.saveObject(Realm.getDefaultInstance(), this.workout);
                     } else {
-                        this.workout.getPrescriptions().add(newPrescription);
+                        Realm.getDefaultInstance().beginTransaction();
+                        if (this.workout.getPrescriptions() == null) {
+                            this.workout.setPrescriptions(new RealmList<DPrescription>(newPrescription));
+                        } else {
+                            this.workout.getPrescriptions().add(newPrescription);
+                        }
+                        Realm.getDefaultInstance().commitTransaction();
                     }
-                    Realm.getDefaultInstance().commitTransaction();
                 }
             }
             ((WorkoutPrescriptionAdaptor)this.prescriptionsRv.getAdapter()).setItems(this.workout.getPrescriptions().toArray());

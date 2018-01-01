@@ -6,23 +6,33 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white">
+    android:background="@android:color/white"
+    >
 
     <include layout="@layout/include_toolbar"/>
 
-    <android.support.design.widget.TextInputLayout
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/TextInputLabel">
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/name_et"
+        android:layout_height="match_parent"
+        android:padding="@dimen/padding_1"
+        >
+
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:hint="@string/name"
-            android:textSize="16sp"
-            android:digits="1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ "
-            android:inputType="textCapCharacters"/>
-    </android.support.design.widget.TextInputLayout>
+            android:theme="@style/TextInputLabel">
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/name_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:hint="@string/name"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:inputType="text"/>
+        </android.support.design.widget.TextInputLayout>
+
+    </LinearLayout>
 
 </LinearLayout>

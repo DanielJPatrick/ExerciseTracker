@@ -43,6 +43,18 @@ public class ExerciseListActivity extends AppCompatActivity implements BaseAdapt
     }
 
     @Override
+    public boolean onSupportNavigateUp() {
+        this.onBackPressed();
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        this.setResult(ExerciseListActivity.RESULT_CANCELED, null);
+        this.finish();
+    }
+
+    @Override
     public void onItemClicked(BaseAdapter adapter, BaseAdapter.BaseViewHolder viewHolder, Object item) {
         if (adapter == this.exerciseRv.getAdapter()) {
             Intent data = new Intent();
