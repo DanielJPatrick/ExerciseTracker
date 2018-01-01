@@ -46,9 +46,6 @@ public class MainActivity extends AppCompatActivity implements BaseAdapter.OnIte
         this.drawerRv = (RecyclerView) this.findViewById(R.id.drawer_recycler_view);
 
         DrawerAdapter.Item items[] = new DrawerAdapter.Item[4];
-        //items[0] = new DrawerAdapter.Item(this.getString(R.string.timetable));
-        //items[1] = new DrawerAdapter.Item(this.getString(R.string.schedules));
-        //items[2] = new DrawerAdapter.Item(this.getString(R.string.routines));
         items[0] = new DrawerAdapter.Item(this.getString(R.string.workouts));
         items[1] = new DrawerAdapter.Item(this.getString(R.string.exercises));
         items[2] = new DrawerAdapter.Item(this.getString(R.string.variables));
@@ -58,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements BaseAdapter.OnIte
         this.drawerAdapter.nullSelectionAllowed = false;
         this.drawerAdapter.multiSelectionAllowed = false;
         this.drawerAdapter.addOnItemSelectedListener(this);
-        //this.drawerAdapter(items[0]);
+
         this.drawerRv.setAdapter(drawerAdapter);
         this.drawerRv.setLayoutManager(new LinearLayoutManager(this));
 
@@ -93,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements BaseAdapter.OnIte
         if (this.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             this.drawerLayout.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            this.finish();
         }
     }
 
