@@ -12,6 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@android:color/black"
+        android:layout_gravity="center"
         android:paddingEnd="@dimen/padding_2"
         />
 
@@ -19,6 +20,7 @@
         android:id="@+id/value_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:textColor="@android:color/black"
         />
 
@@ -32,7 +34,7 @@
         android:id="@+id/delete_Iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_clear_accent_24dp"
+        android:src="@drawable/ic_delete_forever_accent_32dp"
         android:paddingStart="@dimen/padding_2"
         />
 
