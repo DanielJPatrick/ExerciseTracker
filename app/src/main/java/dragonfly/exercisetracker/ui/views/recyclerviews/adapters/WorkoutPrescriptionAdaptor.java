@@ -1,6 +1,8 @@
 package dragonfly.exercisetracker.ui.views.recyclerviews.adapters;
 
 
+import android.app.DialogFragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,15 +16,17 @@ import dragonfly.exercisetracker.R;
 import dragonfly.exercisetracker.data.database.models.DAttribute;
 import dragonfly.exercisetracker.data.database.models.DPrescription;
 import dragonfly.exercisetracker.data.database.models.DWorkout;
+import dragonfly.exercisetracker.ui.fragments.DeleteConfirmDialogFragment;
 import io.realm.Realm;
 
 public class WorkoutPrescriptionAdaptor extends BaseAdapter {
-    private DWorkout workout;
     private static final int EXERCISE_VH_TYPE = 1;
-    private static final int TARGET_VH_TYPE = 2;
+    private DWorkout workout;
+    private AppCompatActivity activity;
 
-    public WorkoutPrescriptionAdaptor(DPrescription[] rawItems) {
+    public WorkoutPrescriptionAdaptor(AppCompatActivity activity, DPrescription[] rawItems) {
         super(rawItems);
+        this.activity = activity;
     }
 
     public DWorkout getWorkout() {
@@ -69,7 +73,7 @@ public class WorkoutPrescriptionAdaptor extends BaseAdapter {
         return null;
     }
 
-    private class ExerciseViewHolder extends BaseAdapter.BaseViewHolder {
+    private class ExerciseViewHolder extends BaseAdapter.BaseViewHolder implements DeleteConfirmDialogFragment.NoticeDialogListener {
         private View itemView;
         private TextView nameTv;
         private ImageView deleteIv;
@@ -82,12 +86,9 @@ public class WorkoutPrescriptionAdaptor extends BaseAdapter {
             this.deleteIv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(WorkoutPrescriptionAdaptor.this.workout != null) {
-                        Realm.getDefaultInstance().beginTransaction();
-                        WorkoutPrescriptionAdaptor.this.workout.getPrescriptions().remove(((ExerciseViewBinder)WorkoutPrescriptionAdaptor.this.getItem(ExerciseViewHolder.this.boundPosition)).prescription);
-                        Realm.getDefaultInstance().commitTransaction();
-                    }
-                    WorkoutPrescriptionAdaptor.this.removeItems(new Integer[]{ExerciseViewHolder.this.boundPosition});
+                    DeleteConfirmDialogFragment deleteConfirmDialogFragment = new DeleteConfirmDialogFragment();
+                    deleteConfirmDialogFragment.setListener(ExerciseViewHolder.this);
+                    deleteConfirmDialogFragment.show(WorkoutPrescriptionAdaptor.this.activity.getFragmentManager(), DeleteConfirmDialogFragment.class.getName());
                 }
             });
         }
@@ -95,6 +96,21 @@ public class WorkoutPrescriptionAdaptor extends BaseAdapter {
         @Override
         public ExerciseViewBinder getViewBinder() {
             return (ExerciseViewBinder)super.getViewBinder();
+        }
+
+        @Override
+        public void onDialogPositiveClick(DialogFragment dialog) {
+            if(WorkoutPrescriptionAdaptor.this.workout != null) {
+                Realm.getDefaultInstance().beginTransaction();
+                WorkoutPrescriptionAdaptor.this.workout.getPrescriptions().remove(((ExerciseViewBinder)WorkoutPrescriptionAdaptor.this.getItem(ExerciseViewHolder.this.boundPosition)).prescription);
+                Realm.getDefaultInstance().commitTransaction();
+            }
+            WorkoutPrescriptionAdaptor.this.removeItems(new Integer[]{ExerciseViewHolder.this.boundPosition});
+        }
+
+        @Override
+        public void onDialogNegativeClick(DialogFragment dialog) {
+
         }
     }
 

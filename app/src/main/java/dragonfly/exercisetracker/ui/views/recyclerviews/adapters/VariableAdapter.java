@@ -1,5 +1,7 @@
 package dragonfly.exercisetracker.ui.views.recyclerviews.adapters;
 
+import android.app.DialogFragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,14 +14,17 @@ import java.util.ArrayList;
 import dragonfly.exercisetracker.R;
 import dragonfly.exercisetracker.data.database.models.DIModel;
 import dragonfly.exercisetracker.data.database.models.DVariable;
+import dragonfly.exercisetracker.ui.fragments.DeleteConfirmDialogFragment;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
 public class VariableAdapter extends BaseAdapter {
     private static final int VARIABLE_VH_TYPE = 1;
+    private AppCompatActivity activity;
 
-    public VariableAdapter(DVariable[] rawItems) {
+    public VariableAdapter(AppCompatActivity activity, DVariable[] rawItems) {
         super(rawItems);
+        this.activity = activity;
     }
 
     @Override
@@ -53,7 +58,7 @@ public class VariableAdapter extends BaseAdapter {
         return null;
     }
 
-    private class VariableViewHolder extends BaseViewHolder {
+    private class VariableViewHolder extends BaseViewHolder implements DeleteConfirmDialogFragment.NoticeDialogListener {
         private View itemView;
         private TextView nameTv;
         private ImageView deleteIv;
@@ -66,11 +71,9 @@ public class VariableAdapter extends BaseAdapter {
             this.deleteIv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Realm.getDefaultInstance().beginTransaction();
-                    Realm.getDefaultInstance().where(DVariable.class).equalTo(DIModel.PRIMARY_KEY, VariableViewHolder.this.getViewBinder().variable.getPrimaryKey()).findAll().deleteAllFromRealm();
-                    Realm.getDefaultInstance().commitTransaction();
-                    RealmResults<DVariable> realmResults = Realm.getDefaultInstance().where(DVariable.class).findAll();
-                    VariableAdapter.this.setItems(realmResults.toArray(new DVariable[realmResults.size()]));
+                    DeleteConfirmDialogFragment deleteConfirmDialogFragment = new DeleteConfirmDialogFragment();
+                    deleteConfirmDialogFragment.setListener(VariableViewHolder.this);
+                    deleteConfirmDialogFragment.show(VariableAdapter.this.activity.getFragmentManager(), DeleteConfirmDialogFragment.class.getName());
                 }
             });
         }
@@ -78,6 +81,20 @@ public class VariableAdapter extends BaseAdapter {
         @Override
         public VariableViewBinder getViewBinder() {
             return (VariableViewBinder)super.getViewBinder();
+        }
+
+        @Override
+        public void onDialogPositiveClick(DialogFragment dialog) {
+            Realm.getDefaultInstance().beginTransaction();
+            Realm.getDefaultInstance().where(DVariable.class).equalTo(DIModel.PRIMARY_KEY, VariableViewHolder.this.getViewBinder().variable.getPrimaryKey()).findAll().deleteAllFromRealm();
+            Realm.getDefaultInstance().commitTransaction();
+            RealmResults<DVariable> realmResults = Realm.getDefaultInstance().where(DVariable.class).findAll();
+            VariableAdapter.this.setItems(realmResults.toArray(new DVariable[realmResults.size()]));
+        }
+
+        @Override
+        public void onDialogNegativeClick(DialogFragment dialog) {
+
         }
     }
 

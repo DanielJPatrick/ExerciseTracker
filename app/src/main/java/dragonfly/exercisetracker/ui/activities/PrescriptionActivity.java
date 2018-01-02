@@ -39,7 +39,7 @@ public class PrescriptionActivity extends AppCompatActivity implements BaseAdapt
 
         this.targetsRv = (RecyclerView) this.findViewById(R.id.recycler_view);
         this.targetsRv.setLayoutManager(new LinearLayoutManager(this));
-        this.targetsRv.setAdapter(new AttributeAdapter(new DAttribute[]{}));
+        this.targetsRv.setAdapter(new AttributeAdapter(this, new DAttribute[]{}));
         ((AttributeAdapter)this.targetsRv.getAdapter()).addOnItemClickedListener(this);
 
         this.findViewById(R.id.new_fab).setOnClickListener(new View.OnClickListener() {

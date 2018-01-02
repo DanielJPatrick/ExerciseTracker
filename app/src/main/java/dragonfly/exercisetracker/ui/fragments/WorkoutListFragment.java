@@ -49,7 +49,7 @@ public class WorkoutListFragment extends Fragment implements BaseAdapter.OnItemS
         View rootView = inflater.inflate(R.layout.fragment_workout_list, container, false);
         this.workoutRv = (RecyclerView)rootView.findViewById(R.id.recycler_view);
         this.workoutRv.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL, false));
-        this.workoutRv.setAdapter(new WorkoutAdapter(new DWorkout[0]));
+        this.workoutRv.setAdapter(new WorkoutAdapter((AppCompatActivity)this.getActivity(), new DWorkout[0]));
         ((WorkoutAdapter)this.workoutRv.getAdapter()).addOnItemSelectedListener(this);
 
         rootView.findViewById(R.id.new_fab).setOnClickListener(new View.OnClickListener() {

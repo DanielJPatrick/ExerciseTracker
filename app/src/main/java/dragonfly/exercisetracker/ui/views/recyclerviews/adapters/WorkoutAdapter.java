@@ -1,6 +1,8 @@
 package dragonfly.exercisetracker.ui.views.recyclerviews.adapters;
 
 
+import android.app.DialogFragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,14 +15,17 @@ import java.util.ArrayList;
 import dragonfly.exercisetracker.R;
 import dragonfly.exercisetracker.data.database.models.DIModel;
 import dragonfly.exercisetracker.data.database.models.DWorkout;
+import dragonfly.exercisetracker.ui.fragments.DeleteConfirmDialogFragment;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
 public class WorkoutAdapter extends BaseAdapter {
     private static final int WORKOUT_VH_TYPE = 1;
+    private AppCompatActivity activity;
 
-    public WorkoutAdapter(DWorkout[] rawItems) {
+    public WorkoutAdapter(AppCompatActivity activity, DWorkout[] rawItems) {
         super(rawItems);
+        this.activity = activity;
     }
 
     @Override
@@ -54,7 +59,7 @@ public class WorkoutAdapter extends BaseAdapter {
         return null;
     }
 
-    private class WorkoutViewHolder extends BaseViewHolder {
+    private class WorkoutViewHolder extends BaseViewHolder implements DeleteConfirmDialogFragment.NoticeDialogListener {
         private View itemView;
         private TextView nameTv;
         private ImageView deleteIv;
@@ -67,11 +72,9 @@ public class WorkoutAdapter extends BaseAdapter {
             this.deleteIv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Realm.getDefaultInstance().beginTransaction();
-                    Realm.getDefaultInstance().where(DWorkout.class).equalTo(DIModel.PRIMARY_KEY, WorkoutViewHolder.this.getViewBinder().workout.getPrimaryKey()).findAll().deleteAllFromRealm();
-                    Realm.getDefaultInstance().commitTransaction();
-                    RealmResults<DWorkout> realmResults = Realm.getDefaultInstance().where(DWorkout.class).findAll();
-                    WorkoutAdapter.this.setItems(realmResults.toArray(new DWorkout[realmResults.size()]));
+                    DeleteConfirmDialogFragment deleteConfirmDialogFragment = new DeleteConfirmDialogFragment();
+                    deleteConfirmDialogFragment.setListener(WorkoutViewHolder.this);
+                    deleteConfirmDialogFragment.show(WorkoutAdapter.this.activity.getFragmentManager(), DeleteConfirmDialogFragment.class.getName());
                 }
             });
         }
@@ -79,6 +82,20 @@ public class WorkoutAdapter extends BaseAdapter {
         @Override
         public WorkoutAdapter.WorkoutViewBinder getViewBinder() {
             return (WorkoutAdapter.WorkoutViewBinder)super.getViewBinder();
+        }
+
+        @Override
+        public void onDialogPositiveClick(DialogFragment dialog) {
+            Realm.getDefaultInstance().beginTransaction();
+            Realm.getDefaultInstance().where(DWorkout.class).equalTo(DIModel.PRIMARY_KEY, WorkoutViewHolder.this.getViewBinder().workout.getPrimaryKey()).findAll().deleteAllFromRealm();
+            Realm.getDefaultInstance().commitTransaction();
+            RealmResults<DWorkout> realmResults = Realm.getDefaultInstance().where(DWorkout.class).findAll();
+            WorkoutAdapter.this.setItems(realmResults.toArray(new DWorkout[realmResults.size()]));
+        }
+
+        @Override
+        public void onDialogNegativeClick(DialogFragment dialog) {
+
         }
     }
 

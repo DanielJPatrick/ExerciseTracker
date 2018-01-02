@@ -49,7 +49,7 @@ public class VariableListFragment extends Fragment implements BaseAdapter.OnItem
 
         this.variableRv = (RecyclerView)rootView.findViewById(R.id.recycler_view);
         this.variableRv.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL, false));
-        this.variableRv.setAdapter(new VariableAdapter(new DVariable[0]));
+        this.variableRv.setAdapter(new VariableAdapter((AppCompatActivity)this.getActivity(), new DVariable[0]));
         ((VariableAdapter)this.variableRv.getAdapter()).addOnItemSelectedListener(this);
 
         rootView.findViewById(R.id.new_fab).setOnClickListener(new View.OnClickListener() {
