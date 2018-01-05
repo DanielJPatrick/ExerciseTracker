@@ -1,6 +1,8 @@
 package dragonfly.exercisetracker.ui.views.recyclerviews.adapters;
 
 
+import android.app.DialogFragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,14 +15,17 @@ import java.util.ArrayList;
 import dragonfly.exercisetracker.R;
 import dragonfly.exercisetracker.data.database.models.DAttribute;
 import dragonfly.exercisetracker.data.database.models.DIModel;
+import dragonfly.exercisetracker.ui.fragments.DeleteConfirmDialogFragment;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
 public class AttributeAdapter extends BaseAdapter {
     private static final int ATTRIBUTE_VH_TYPE = 1;
+    private AppCompatActivity activity;
 
-    public AttributeAdapter(DAttribute[] rawItems) {
+    public AttributeAdapter(AppCompatActivity activity, DAttribute[] rawItems) {
         super(rawItems);
+        this.activity = activity;
     }
 
     @Override
@@ -54,7 +59,7 @@ public class AttributeAdapter extends BaseAdapter {
         return null;
     }
 
-    private class AttributeViewHolder extends BaseViewHolder {
+    private class AttributeViewHolder extends BaseViewHolder implements DeleteConfirmDialogFragment.NoticeDialogListener {
         private View itemView;
         private TextView variableTv;
         private TextView valueTv;
@@ -69,10 +74,9 @@ public class AttributeAdapter extends BaseAdapter {
             this.deleteIv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    AttributeAdapter.this.removeItems(new DAttribute[] {AttributeViewHolder.this.getViewBinder().attribute});
-                    Realm.getDefaultInstance().beginTransaction();
-                    Realm.getDefaultInstance().where(DAttribute.class).equalTo(DIModel.PRIMARY_KEY, AttributeViewHolder.this.getViewBinder().attribute.getPrimaryKey()).findAll().deleteAllFromRealm();
-                    Realm.getDefaultInstance().commitTransaction();
+                    DeleteConfirmDialogFragment deleteConfirmDialogFragment = new DeleteConfirmDialogFragment();
+                    deleteConfirmDialogFragment.setListener(AttributeViewHolder.this);
+                    deleteConfirmDialogFragment.show(AttributeAdapter.this.activity.getFragmentManager(), DeleteConfirmDialogFragment.class.getName());
                 }
             });
         }
@@ -80,6 +84,19 @@ public class AttributeAdapter extends BaseAdapter {
         @Override
         public AttributeViewBinder getViewBinder() {
             return (AttributeViewBinder)super.getViewBinder();
+        }
+
+        @Override
+        public void onDialogPositiveClick(DialogFragment dialog) {
+            AttributeAdapter.this.removeItems(new DAttribute[] {AttributeViewHolder.this.getViewBinder().attribute});
+            Realm.getDefaultInstance().beginTransaction();
+            Realm.getDefaultInstance().where(DAttribute.class).equalTo(DIModel.PRIMARY_KEY, AttributeViewHolder.this.getViewBinder().attribute.getPrimaryKey()).findAll().deleteAllFromRealm();
+            Realm.getDefaultInstance().commitTransaction();
+        }
+
+        @Override
+        public void onDialogNegativeClick(DialogFragment dialog) {
+
         }
     }
 

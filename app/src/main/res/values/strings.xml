@@ -26,4 +26,8 @@
     <string name="attribute">Attribute</string>
     <string name="attributes">Attributes</string>
 
+    <string name="confirm_delete">Confirm Delete</string>
+    <string name="cancel">Cancel</string>
+    <string name="OK">OK</string>
+
 </resources>

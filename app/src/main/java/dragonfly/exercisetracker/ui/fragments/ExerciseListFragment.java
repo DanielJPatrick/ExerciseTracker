@@ -48,7 +48,7 @@ public class ExerciseListFragment extends Fragment implements BaseAdapter.OnItem
         View rootView = inflater.inflate(R.layout.fragment_exercise_list, container, false);
         this.exerciseRv = (RecyclerView)rootView.findViewById(R.id.recycler_view);
         this.exerciseRv.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL, false));
-        this.exerciseRv.setAdapter(new ExerciseAdapter(new DExercise[0]));
+        this.exerciseRv.setAdapter(new ExerciseAdapter((AppCompatActivity)this.getActivity(), new DExercise[0]));
         ((ExerciseAdapter)this.exerciseRv.getAdapter()).addOnItemSelectedListener(this);
 
         rootView.findViewById(R.id.new_fab).setOnClickListener(new View.OnClickListener() {

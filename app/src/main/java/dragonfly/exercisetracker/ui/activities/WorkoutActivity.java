@@ -46,7 +46,7 @@ public class WorkoutActivity extends AppCompatActivity implements BaseAdapter.On
 
         this.prescriptionsRv = (RecyclerView)this.findViewById(R.id.recycler_view);
         this.prescriptionsRv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        this.prescriptionsRv.setAdapter(new WorkoutPrescriptionAdaptor(new DPrescription[0]));
+        this.prescriptionsRv.setAdapter(new WorkoutPrescriptionAdaptor(this, new DPrescription[0]));
         ((WorkoutPrescriptionAdaptor)this.prescriptionsRv.getAdapter()).selectable = false;
         ((WorkoutPrescriptionAdaptor)this.prescriptionsRv.getAdapter()).addOnItemClickedListener(this);
 
