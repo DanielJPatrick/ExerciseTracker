@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements BaseAdapter.OnIte
         this.drawerAdapter.nullSelectionAllowed = false;
         this.drawerAdapter.multiSelectionAllowed = false;
         this.drawerAdapter.addOnItemSelectedListener(this);
+        this.drawerAdapter.setSelected(items[0]);
 
         this.drawerRv.setAdapter(drawerAdapter);
         this.drawerRv.setLayoutManager(new LinearLayoutManager(this));
@@ -65,6 +66,10 @@ public class MainActivity extends AppCompatActivity implements BaseAdapter.OnIte
         this.drawerToggle.setDrawerIndicatorEnabled(true);
         this.drawerLayout.addDrawerListener(this.drawerToggle);
         this.drawerToggle.syncState();
+
+
+        //this.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                //WorkoutListFragment.newInstance(), WorkoutListFragment.class.getName()).commit();
     }
 
     @Override

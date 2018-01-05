@@ -189,8 +189,11 @@ public abstract class BaseAdapter extends RecyclerView.Adapter {
         for(Object itemKeyLooper : this.items.keySet()) {
             if(selectedItemKey != null) {
                 if (selectedItemKey.equals(itemKeyLooper)) {
-                    this.selectedKeys.put(itemKeyLooper, this.getPositionFromKey(itemKeyLooper));
-                    this.notifyItemChanged(this.getPositionFromKey(itemKeyLooper));
+                    if(!this.selectedKeys.containsKey(selectedItemKey)) {
+                        this.newSelectedKeys.put(selectedItemKey, this.getPositionFromKey(selectedItemKey));
+                        this.selectedKeys.put(itemKeyLooper, this.getPositionFromKey(itemKeyLooper));
+                        this.notifyItemChanged(this.getPositionFromKey(itemKeyLooper));
+                    }
                 }
             }
         }
