@@ -2,14 +2,14 @@
 
 buildscript {
     ext {
-        realmVersion = '4.3.1'
+        realmVersion = '4.3.3'
     }
     repositories {
         jcenter()
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.0'
+        classpath 'com.android.tools.build:gradle:3.0.1'
         classpath "io.realm:realm-gradle-plugin:${realmVersion}"
         classpath "com.novoda:gradle-android-command-plugin:1.5.0"
         // NOTE: Do not place your application dependencies here; they belong

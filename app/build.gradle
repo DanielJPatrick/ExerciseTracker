@@ -35,11 +35,7 @@ android {
     }
 }
 
-// REALM DB INSPECTOR
 repositories {
-    maven {
-        url 'https://github.com/uPhyca/stetho-realm/raw/master/maven-repo'
-    }
     google()
 }
 
@@ -54,8 +50,4 @@ dependencies {
 
     // REALM
     compile "io.realm:realm-android-library:${realmVersion}"
-
-    // REALM DB INSPECTOR
-    debugCompile 'com.facebook.stetho:stetho:1.4.1'
-    compile 'com.uphyca:stetho_realm:2.0.0'
 }

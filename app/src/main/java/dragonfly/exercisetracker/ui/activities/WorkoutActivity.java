@@ -38,9 +38,9 @@ public class WorkoutActivity extends AppCompatActivity implements BaseAdapter.On
         this.setSupportActionBar(toolbar);
         this.getSupportActionBar().setTitle(R.string.workout);
         this.getSupportActionBar().setSubtitle(null);
-        this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        this.getSupportActionBar().setDisplayShowHomeEnabled(true);
-        this.getSupportActionBar().setHomeButtonEnabled(true);
+        this.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        this.getSupportActionBar().setDisplayShowHomeEnabled(false);
+        this.getSupportActionBar().setHomeButtonEnabled(false);
 
         this.nameEt = (EditText) this.findViewById(R.id.name_et);
 
